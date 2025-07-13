@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:signals/signals_flutter.dart';
+
+import 'database_service.dart';
 
 class GedeeldeRuimteScreen extends StatelessWidget {
   const GedeeldeRuimteScreen({super.key});
@@ -6,7 +9,10 @@ class GedeeldeRuimteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(sCodeOpleider.watch(context)),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
