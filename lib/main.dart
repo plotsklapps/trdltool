@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:trdltool/rolkeuze_screen.dart';
 
 import 'firebase_options.dart';
+import 'flex_theme.dart';
+import 'opleider_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'TRDLtool', home: const RolKeuzeScreen());
+    return MaterialApp(
+      title: 'TRDLtool',
+      theme: AppTheme.light,
+      home: const OpleiderScreen(),
+    );
   }
 }

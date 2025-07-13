@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/database_service.dart';
-import 'package:trdltool/gedeelderuimte_screen.dart';
+import 'package:trdltool/opleider_screen.dart';
 import 'package:trdltool/timer_service.dart';
 
 class NieuweRuimteScreen extends StatelessWidget {
@@ -34,7 +34,7 @@ class NieuweRuimteScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             Text(
-              sCodeOpleider.watch(context) ?? '',
+              sCodeOpleider.watch(context),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
@@ -50,7 +50,7 @@ class NieuweRuimteScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const GedeeldeRuimteScreen();
+                          return const OpleiderScreen();
                         },
                       ),
                     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/leerling_screen.dart';
 
 import 'database_service.dart';
-import 'gedeelderuimte_screen.dart';
 
 class BestaandeRuimteScreen extends StatelessWidget {
   const BestaandeRuimteScreen({super.key});
@@ -48,11 +48,12 @@ class BestaandeRuimteScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const GedeeldeRuimteScreen();
+                        return const LeerlingScreen();
                       },
                     ),
                   );
                 } else {
+                  debugPrint('Invalid code entered: ${sCodeLeerling.value}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Ongeldige code, probeer het opnieuw.'),
