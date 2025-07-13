@@ -44,7 +44,11 @@ class DatabaseService {
   Future<bool> validateCodeFromDatabase(String enteredCode) async {
     // Create instance of FirebaseDatabase and check if the code exists.
     final database = FirebaseDatabase.instance.ref();
-    final codeSnapshot = await database.child('codes/$enteredCode').get();
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    final codeSnapshot = await database
+        .child('$formattedDate/$enteredCode')
+        .get();
 
     if (codeSnapshot.exists) {
       final data = codeSnapshot.value as Map;
