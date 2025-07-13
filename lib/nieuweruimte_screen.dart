@@ -43,8 +43,12 @@ class NieuweRuimteScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  onPressed: () {
+                  onPressed: () async {
                     databaseService.saveCodeToDatabase();
+
+                    await databaseService.initializeSession(
+                      sCodeOpleider.value,
+                    );
 
                     Navigator.push(
                       context,

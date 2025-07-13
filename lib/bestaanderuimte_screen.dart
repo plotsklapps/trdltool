@@ -5,6 +5,8 @@ import 'package:trdltool/leerling_screen.dart';
 
 import 'database_service.dart';
 
+final Signal<String> sCodeLeerling = Signal<String>('ABC00');
+
 class BestaandeRuimteScreen extends StatelessWidget {
   const BestaandeRuimteScreen({super.key});
 
@@ -12,7 +14,6 @@ class BestaandeRuimteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
     final TextEditingController codeController = TextEditingController();
-    final Signal<String> sCodeLeerling = Signal<String>('');
     return Scaffold(
       appBar: AppBar(),
       body: Center(

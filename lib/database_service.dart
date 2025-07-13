@@ -158,6 +158,22 @@ class DatabaseService {
     return false;
   }
 
+  Future<void> initializeSession(String sessionCode) async {
+    final database = FirebaseDatabase.instance.ref();
+    if (sessionCode.isEmpty) {
+      print('Session code cannot be empty. Aborting...');
+      return;
+    }
+    try {
+      await database
+          .child('sessions/$sessionCode/buttons')
+          .set(<String, dynamic>{});
+      print('Session initialized with code: $sessionCode');
+    } catch (e) {
+      print('Error initializing session: $e');
+    }
+  }
+
   Future<void> updateButtonState(
     String sessionCode,
     String buttonId,
