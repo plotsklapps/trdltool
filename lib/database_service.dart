@@ -157,4 +157,36 @@ class DatabaseService {
     //     or if any other unhandled case led here, the code is considered invalid.
     return false;
   }
+
+  Future<void> updateButtonState(
+    String sessionCode,
+    String buttonId,
+    String state,
+  ) async {
+    final database = FirebaseDatabase.instance.ref();
+
+    await database.child('sessions/$sessionCode/buttons/$buttonId').update({
+      'state': state,
+    });
+  }
+
+  Future<void> startTimer(String sessionCode, String buttonId) async {
+    final database = FirebaseDatabase.instance.ref();
+
+    final ref = database.child('sessions/$sessionCode/buttons/$buttonId');
+    await ref.update({'state': 'timer', 'timer': 0});
+
+    for (int i = 1; i <= 60; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      await ref.update({'timer': i});
+    }
+  }
+
+  Stream<Map<String, dynamic>> listenButtonState(String sessionCode) {
+    final database = FirebaseDatabase.instance.ref();
+
+    return database.child('sessions/$sessionCode/buttons').onValue.map((event) {
+      return Map<String, dynamic>.from(event.snapshot.value as Map);
+    });
+  }
 }
