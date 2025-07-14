@@ -10,6 +10,7 @@ final Signal<String> sCodeOpleider = Signal<String>('ABC00');
 final Signal<String> sCodeLeerling = Signal<String>('ABC00');
 
 class DatabaseService {
+  final _database = FirebaseDatabase.instance.ref();
   final TimerService _timerService = TimerService();
 
   void generateCode() {
@@ -24,20 +25,18 @@ class DatabaseService {
   }
 
   void saveCodeToDatabase() {
-    final database = FirebaseDatabase.instance.ref();
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final Map<String, dynamic> codeData = {'createdAt': now.toIso8601String()};
-    database.child('$formattedDate/${sCodeOpleider.value}').set(codeData);
+    _database.child('$formattedDate/${sCodeOpleider.value}').set(codeData);
   }
 
   Future<bool> validateCodeFromDatabase(String enteredCode) async {
-    final database = FirebaseDatabase.instance.ref();
     final DateTime currentTime = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(currentTime);
 
     try {
-      final DatabaseEvent event = await database
+      final DatabaseEvent event = await _database
           .child('$formattedDate/$enteredCode')
           .once();
       final DataSnapshot codeSnapshot = event.snapshot;
@@ -63,5 +62,23 @@ class DatabaseService {
       return false;
     }
     return false;
+  }
+
+  void saveButtonPress(String buttonName, String caller, String state) async {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    final String formattedTime = DateFormat('HH:mm:ss').format(now);
+
+    final Map<String, dynamic> buttonData = {
+      'buttonName': buttonName,
+      'state': state, // 'rest', 'calling', 'called', 'active'
+      'initiator': caller, // 'opleider' or 'leerling'
+      'timestamp': formattedTime, // always set for simplicity
+    };
+
+    // Use buttonName as the key so both parties update the same button entry
+    await _database
+        .child('$formattedDate/${sCodeOpleider.value}/buttons/$buttonName')
+        .set(buttonData);
   }
 }

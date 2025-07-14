@@ -10,7 +10,7 @@ class LeerlingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GRI ${sCodeLeerling.watch(context)}'),
+        title: Text('LEERLING ${sCodeLeerling.watch(context)}'),
         centerTitle: true,
       ),
       body: Padding(
