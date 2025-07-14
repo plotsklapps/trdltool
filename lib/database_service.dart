@@ -28,7 +28,37 @@ class DatabaseService {
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final Map<String, dynamic> codeData = {'createdAt': now.toIso8601String()};
-    _database.child('$formattedDate/${sCodeOpleider.value}').set(codeData);
+
+    // Initial button states
+    final List<String> buttonNames = [
+      'MKS ALARM',
+      'MKS INFO',
+      'AL',
+      'OBI',
+      'DVL',
+      'BuurTRDL',
+      'Mdw Rangeren',
+      'CRA',
+      'Brugwachter',
+      'MCN 3064',
+      'ALARM',
+      'ALGEMEEN',
+      'BEL MCN',
+    ];
+    final Map<String, dynamic> buttons = {
+      for (var name in buttonNames)
+        name: {
+          'buttonName': name,
+          'state': 'rest',
+          'initiator': null,
+          'timestamp': null,
+        },
+    };
+
+    _database.child('$formattedDate/${sCodeOpleider.value}').set({
+      ...codeData,
+      'buttons': buttons,
+    });
   }
 
   Future<bool> validateCodeFromDatabase(String enteredCode) async {

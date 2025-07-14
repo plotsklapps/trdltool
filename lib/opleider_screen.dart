@@ -10,6 +10,7 @@ class OpleiderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DatabaseService databaseService = DatabaseService();
     final DatabaseReference database = FirebaseDatabase.instance.ref();
     final String formattedDate = DateFormat(
       'yyyy-MM-dd',
@@ -19,15 +20,17 @@ class OpleiderScreen extends StatelessWidget {
     return StreamBuilder<DatabaseEvent>(
       stream: database.child(path).onValue,
       builder: (context, snapshot) {
-        Map<String, bool> buttonStates = {};
+        Map<String, String> buttonStates = {};
 
         if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
           final Map<dynamic, dynamic> data =
               snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
           data.forEach((key, value) {
-            final Map<String, dynamic> buttonData =
-                value as Map<String, dynamic>;
-            buttonStates[buttonData['buttonName']] = true;
+            if (value is Map) {
+              final buttonData = Map<String, dynamic>.from(value);
+              buttonStates[buttonData['buttonName']] =
+                  buttonData['state'] ?? 'rest';
+            }
           });
         }
 
@@ -44,20 +47,110 @@ class OpleiderScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Column(
-                        spacing: 16,
                         children: [
                           SizedBox(
                             width: double.infinity,
-                            child: FilledButton(
-                              onPressed: () {},
-                              child: Text(
-                                'MKS ALARM',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onError,
-                                ),
-                              ),
+                            child: Builder(
+                              builder: (context) {
+                                final state =
+                                    buttonStates['MKS ALARM'] ?? 'rest';
+                                Widget child;
+                                Color? backgroundColor;
+                                VoidCallback? onPressed;
+                                switch (state) {
+                                  case 'isCalling':
+                                    child = LinearProgressIndicator(
+                                      minHeight: 12,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Theme.of(context).colorScheme.onError,
+                                      ),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.error.withOpacity(0.2),
+                                    );
+                                    backgroundColor = Theme.of(
+                                      context,
+                                    ).colorScheme.error;
+                                    onPressed = null;
+                                    break;
+                                  case 'isCalled':
+                                    child = Text(
+                                      'Je wordt gebeld!',
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onError,
+                                      ),
+                                    );
+                                    backgroundColor = Theme.of(
+                                      context,
+                                    ).colorScheme.errorContainer;
+                                    onPressed = () {
+                                      // Accept call logic here
+                                    };
+                                    break;
+                                  case 'isActive':
+                                    child = Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.call,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onError,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Actief',
+                                          style: TextStyle(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onError,
+                                          ),
+                                        ),
+                                        // Optionally add a timer widget here
+                                      ],
+                                    );
+                                    backgroundColor = Theme.of(
+                                      context,
+                                    ).colorScheme.primary;
+                                    onPressed = () {
+                                      // End call logic here
+                                    };
+                                    break;
+                                  case 'rest':
+                                  default:
+                                    child = Text(
+                                      'MKS ALARM',
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onError,
+                                      ),
+                                    );
+                                    backgroundColor = Theme.of(
+                                      context,
+                                    ).colorScheme.error;
+                                    onPressed = () {
+                                      databaseService.saveButtonPress(
+                                        'MKS ALARM',
+                                        'OPLEIDER',
+                                        'isCalling',
+                                      );
+                                    };
+                                }
+                                return FilledButton(
+                                  style: FilledButton.styleFrom(
+                                    backgroundColor: backgroundColor,
+                                  ),
+                                  onPressed: onPressed,
+                                  child: child,
+                                );
+                              },
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -65,6 +158,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('MKS INFO'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -72,6 +166,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('AL'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -79,6 +174,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('OBI'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -92,7 +188,6 @@ class OpleiderScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
-                        spacing: 16,
                         children: [
                           SizedBox(
                             width: double.infinity,
@@ -101,6 +196,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('BuurTRDL'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -108,6 +204,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('Mdw Rangeren'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -115,6 +212,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('CRA'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -122,6 +220,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: Text('Brugwachter'),
                             ),
                           ),
+                          SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
