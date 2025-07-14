@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/leerling_screen.dart';
 
 import 'database_service.dart';
-
-final Signal<String> sCodeLeerling = Signal<String>('ABC00');
 
 class BestaandeRuimteScreen extends StatelessWidget {
   const BestaandeRuimteScreen({super.key});

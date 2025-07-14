@@ -7,9 +7,6 @@ class OpleiderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseService databaseService = DatabaseService();
-    final String sessionCode = sCodeOpleider.value;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('GRI ${sCodeOpleider.watch(context)}'),
@@ -28,13 +25,7 @@ class OpleiderScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'MKS_ALARM',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: Text(
                             'MKS ALARM',
                             style: TextStyle(
@@ -46,52 +37,28 @@ class OpleiderScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'MKS_INFO',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('MKS INFO'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'AL',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('AL'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'OBI',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('OBI'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'DVL',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('DVL'),
                         ),
                       ),
@@ -106,65 +73,35 @@ class OpleiderScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'BUUR_TRDL',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('BuurTRDL'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'MDW_RANG',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('Mdw Rangeren'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'CRA',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('CRA'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'BRUG',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('Brugwachter'),
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {
-                            databaseService.updateButtonState(
-                              sessionCode,
-                              'MCN_####',
-                              'pressed',
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text('MCN 3064'),
                         ),
                       ),

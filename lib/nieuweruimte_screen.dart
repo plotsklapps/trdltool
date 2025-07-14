@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/database_service.dart';
 import 'package:trdltool/opleider_screen.dart';
@@ -43,12 +44,8 @@ class NieuweRuimteScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  onPressed: () async {
+                  onPressed: () {
                     databaseService.saveCodeToDatabase();
-
-                    await databaseService.initializeSession(
-                      sCodeOpleider.value,
-                    );
 
                     Navigator.push(
                       context,
@@ -72,6 +69,7 @@ class NieuweRuimteScreen extends StatelessWidget {
   String _formatTime(int seconds) {
     final minutes = seconds ~/ 60;
     final secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    final DateTime time = DateTime(0, 0, 0, 0, minutes, secs);
+    return DateFormat('mm:ss').format(time);
   }
 }
