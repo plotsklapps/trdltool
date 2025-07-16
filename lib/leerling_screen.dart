@@ -68,17 +68,35 @@ class LeerlingScreen extends StatelessWidget {
                                   case 'isCalling':
                                     if (initiator == 'OPLEIDER') {
                                       // Opleider is calling, Leerling can accept
-                                      child = Text(
-                                        'Opleider belt...',
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onError,
-                                        ),
+                                      child = Stack(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: LinearProgressIndicator(
+                                              minHeight: 20,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(12),
+                                              ),
+                                              valueColor:
+                                                  AlwaysStoppedAnimation(
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.error,
+                                                  ),
+                                              backgroundColor: Theme.of(
+                                                context,
+                                              ).colorScheme.onError,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text('MKS ALARM'),
+                                          ),
+                                        ],
                                       );
                                       backgroundColor = Theme.of(
                                         context,
-                                      ).colorScheme.errorContainer;
+                                      ).colorScheme.error;
                                       onPressed = () {
                                         // Leerling accepts the call
                                         databaseService.saveButtonPress(
@@ -90,7 +108,16 @@ class LeerlingScreen extends StatelessWidget {
                                     } else {
                                       // Leerling is the one calling
                                       child = LinearProgressIndicator(
-                                        minHeight: 12,
+                                        minHeight: 20,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12),
+                                        ),
+                                        valueColor: AlwaysStoppedAnimation(
+                                          Theme.of(context).colorScheme.error,
+                                        ),
+                                        backgroundColor: Theme.of(
+                                          context,
+                                        ).colorScheme.onError,
                                       );
                                       backgroundColor = Theme.of(
                                         context,

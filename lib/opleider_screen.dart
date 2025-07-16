@@ -61,28 +61,26 @@ class OpleiderScreen extends StatelessWidget {
                                   case 'isCalling':
                                     child = Stack(
                                       children: [
-                                        Center(
-                                          child: Text(
-                                            'MKS ALARM',
-                                            style: TextStyle(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.onError,
-                                            ),
-                                          ),
-                                        ),
                                         Align(
-                                          alignment: Alignment.centerRight,
-                                          child: SizedBox(
-                                            height: 18,
-                                            width: 36,
-                                            child: LinearProgressIndicator(
-                                              minHeight: 12,
-                                              color: Theme.of(
+                                          alignment: Alignment.center,
+                                          child: LinearProgressIndicator(
+                                            minHeight: 20,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(12),
+                                            ),
+                                            valueColor: AlwaysStoppedAnimation(
+                                              Theme.of(
                                                 context,
                                               ).colorScheme.error,
                                             ),
+                                            backgroundColor: Theme.of(
+                                              context,
+                                            ).colorScheme.onError,
                                           ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Text('MKS ALARM'),
                                         ),
                                       ],
                                     );
@@ -90,6 +88,7 @@ class OpleiderScreen extends StatelessWidget {
                                       context,
                                     ).colorScheme.error;
                                     onPressed = () {
+                                      // Pressing again cancels the call
                                       databaseService.saveButtonPress(
                                         'MKS ALARM',
                                         'OPLEIDER',
@@ -124,7 +123,7 @@ class OpleiderScreen extends StatelessWidget {
                                             context,
                                           ).colorScheme.onError,
                                         ),
-                                        SizedBox(width: 8),
+                                        const SizedBox(width: 8),
                                         Text(
                                           'Actief',
                                           style: TextStyle(
@@ -133,7 +132,6 @@ class OpleiderScreen extends StatelessWidget {
                                             ).colorScheme.onError,
                                           ),
                                         ),
-                                        // Optionally add a timer widget here
                                       ],
                                     );
                                     backgroundColor = Theme.of(
@@ -174,36 +172,36 @@ class OpleiderScreen extends StatelessWidget {
                               },
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {},
-                              child: Text('MKS INFO'),
+                              child: const Text('MKS INFO'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('AL'),
+                              child: const Text('AL'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('OBI'),
+                              child: const Text('OBI'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('DVL'),
+                              child: const Text('DVL'),
                             ),
                           ),
                         ],
@@ -217,39 +215,39 @@ class OpleiderScreen extends StatelessWidget {
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('BuurTRDL'),
+                              child: const Text('BuurTRDL'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('Mdw Rangeren'),
+                              child: const Text('Mdw Rangeren'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('CRA'),
+                              child: const Text('CRA'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('Brugwachter'),
+                              child: const Text('Brugwachter'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
                               onPressed: () {},
-                              child: Text('MCN 3064'),
+                              child: const Text('MCN 3064'),
                             ),
                           ),
                         ],
@@ -280,7 +278,7 @@ class OpleiderScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Text('ALGEMEEN'),
+                          child: const Text('ALGEMEEN'),
                         ),
                       ),
                     ),
@@ -290,7 +288,7 @@ class OpleiderScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Text('BEL MCN'),
+                          child: const Text('BEL MCN'),
                         ),
                       ),
                     ),
