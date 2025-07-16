@@ -95,6 +95,7 @@ class DatabaseService {
   }
 
   void saveButtonPress(String buttonName, String caller, String state) async {
+    print('Button pressed: $buttonName, Caller: $caller, New state: $state');
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final String formattedTime = DateFormat('HH:mm:ss').format(now);

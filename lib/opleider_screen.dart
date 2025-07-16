@@ -61,17 +61,21 @@ class OpleiderScreen extends StatelessWidget {
                                   case 'isCalling':
                                     child = LinearProgressIndicator(
                                       minHeight: 12,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Theme.of(context).colorScheme.onError,
-                                      ),
+                                      borderRadius: BorderRadius.circular(12),
                                       backgroundColor: Theme.of(
                                         context,
-                                      ).colorScheme.error.withOpacity(0.2),
+                                      ).colorScheme.onError,
                                     );
                                     backgroundColor = Theme.of(
                                       context,
                                     ).colorScheme.error;
-                                    onPressed = null;
+                                    onPressed = () {
+                                      databaseService.saveButtonPress(
+                                        'MKS ALARM',
+                                        'OPLEIDER',
+                                        'rest',
+                                      );
+                                    };
                                     break;
                                   case 'isCalled':
                                     child = Text(
