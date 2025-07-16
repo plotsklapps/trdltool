@@ -33,7 +33,7 @@ class LeerlingScreen extends StatelessWidget {
               buttonStates[buttonData['buttonName']] =
                   buttonData['state'] ?? 'rest';
               buttonInitiators[buttonData['buttonName']] =
-                  buttonData['initiator'];
+                  buttonData['initiator'] ?? '';
             }
           });
         }

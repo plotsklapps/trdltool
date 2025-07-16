@@ -62,9 +62,12 @@ class OpleiderScreen extends StatelessWidget {
                                     child = LinearProgressIndicator(
                                       minHeight: 12,
                                       borderRadius: BorderRadius.circular(12),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Theme.of(context).colorScheme.onError,
+                                      ),
                                       backgroundColor: Theme.of(
                                         context,
-                                      ).colorScheme.onError,
+                                      ).colorScheme.error,
                                     );
                                     backgroundColor = Theme.of(
                                       context,
