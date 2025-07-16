@@ -11,6 +11,7 @@ class NieuweRuimteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
+    final TimerService timerService = TimerService();
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -46,6 +47,8 @@ class NieuweRuimteScreen extends StatelessWidget {
                 FilledButton(
                   onPressed: () {
                     databaseService.saveCodeToDatabase();
+
+                    timerService.cancelTimer();
 
                     Navigator.push(
                       context,
