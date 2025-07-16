@@ -59,15 +59,32 @@ class OpleiderScreen extends StatelessWidget {
                                 VoidCallback? onPressed;
                                 switch (state) {
                                   case 'isCalling':
-                                    child = LinearProgressIndicator(
-                                      minHeight: 12,
-                                      borderRadius: BorderRadius.circular(12),
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Theme.of(context).colorScheme.onError,
-                                      ),
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).colorScheme.error,
+                                    child = Stack(
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'MKS ALARM',
+                                            style: TextStyle(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onError,
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: SizedBox(
+                                            height: 18,
+                                            width: 36,
+                                            child: LinearProgressIndicator(
+                                              minHeight: 12,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.error,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     );
                                     backgroundColor = Theme.of(
                                       context,
