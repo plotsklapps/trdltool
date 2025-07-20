@@ -81,7 +81,7 @@ abstract final class AppTheme {
     // Direct ThemeData properties.
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-    fontFamily: GoogleFonts.teko().fontFamily,
+    fontFamily: GoogleFonts.inter().fontFamily,
   );
 
   // The FlexColorScheme defined dark mode ThemeData.
@@ -144,6 +144,6 @@ abstract final class AppTheme {
     // Direct ThemeData properties.
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-    fontFamily: GoogleFonts.teko().fontFamily,
+    fontFamily: GoogleFonts.inter().fontFamily,
   );
 }

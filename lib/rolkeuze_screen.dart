@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toastification/toastification.dart';
 import 'package:trdltool/database_service.dart';
 import 'package:trdltool/nieuweruimte_screen.dart';
 
@@ -11,7 +13,25 @@ class RolKeuzeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
     return Scaffold(
-      appBar: AppBar(title: Text('TRDLtool'), centerTitle: true),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: Center(
+          child: InkWell(
+            onTap: () {
+              toastification.show(
+                alignment: Alignment.bottomCenter,
+                style: ToastificationStyle.flatColored,
+                icon: FaIcon(FontAwesomeIcons.rocket),
+                title: Text('Functionaliteit zal worden uitgebreid.'),
+                description: Text('Kom snel terug voor een nieuwe update!'),
+              );
+            },
+            child: FaIcon(FontAwesomeIcons.bars),
+          ),
+        ),
+        title: Text('TRDLtool', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
