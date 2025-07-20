@@ -11,7 +11,7 @@ class RolKeuzeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('TRDLtool'), centerTitle: true),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
