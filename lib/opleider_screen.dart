@@ -36,7 +36,10 @@ class OpleiderScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('OPLEIDER ${sCodeOpleider.watch(context)}'),
+            title: Text(
+              'OPLEIDER GRI ${sCodeOpleider.watch(context)}',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -80,7 +83,10 @@ class OpleiderScreen extends StatelessWidget {
                                         ),
                                         Align(
                                           alignment: Alignment.center,
-                                          child: Text('MKS ALARM'),
+                                          child: Text(
+                                            'MKS ALARM',
+                                            style: TextStyle(),
+                                          ),
                                         ),
                                       ],
                                     );

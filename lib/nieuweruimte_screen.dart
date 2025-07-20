@@ -13,7 +13,13 @@ class NieuweRuimteScreen extends StatelessWidget {
     final DatabaseService databaseService = DatabaseService();
     final TimerService timerService = TimerService();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Nieuwe GRI',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,9 +42,14 @@ class NieuweRuimteScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             Text(
+              'Geef onderstaande code aan de leerling\nen druk op de button.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 18),
+            Text(
               sCodeOpleider.watch(context),
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 36),
             Row(
@@ -59,7 +70,7 @@ class NieuweRuimteScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text('Creëer Nieuwe Ruimte'),
+                  child: const Text('Creëer nieuwe GRI'),
                 ),
               ],
             ),
