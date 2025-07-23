@@ -57,98 +57,156 @@ class OpleiderScreen extends StatelessWidget {
                         children: [
                           PhoneButton(
                             buttonName: 'MKS ALARM',
+                            buttonColor: Theme.of(context).colorScheme.primary,
+                            labelColor: Theme.of(context).colorScheme.onPrimary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
                             databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('MKS INFO'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'MKS INFO',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('AL'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'AL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('OBI'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'OBI',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('DVL'),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('Tunnel Operator'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'DVL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('BuurTRDL'),
-                            ),
+                          PhoneButton(
+                            buttonName: 'Tunnel Operator',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('Mdw Rangeren'),
-                            ),
+                          const SizedBox(height: 8.0),
+                          PhoneButton(
+                            buttonName: 'BuurTRDL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          // TODO(plotsklapps): Deze kan eruit.
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('CRA'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'Mdw Rangeren',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('Brugwachter'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'Brugwachter',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Text('MCN 3064'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'MCN 3064',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                         ],
                       ),

@@ -16,7 +16,6 @@ class LeerlingScreen extends StatelessWidget {
     final String formattedDate = DateFormat(
       'yyyy-MM-dd',
     ).format(DateTime.now());
-    // The leerling uses the sCodeLeerling signal to know which room to listen to.
     final String path = '$formattedDate/${sCodeLeerling.value}/buttons';
 
     return StreamBuilder<DatabaseEvent>(
@@ -25,7 +24,9 @@ class LeerlingScreen extends StatelessWidget {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
 
-        if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
+        if (snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data!.snapshot.value != null) {
           final Map<dynamic, dynamic> data =
               snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
           data.forEach((key, value) {
@@ -41,14 +42,18 @@ class LeerlingScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('LEERLING ${sCodeLeerling.watch(context)}'),
+            title: Text(
+              'LEERLING GRI ${sCodeLeerling.watch(context)}',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             centerTitle: true,
           ),
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -59,38 +64,71 @@ class LeerlingScreen extends StatelessWidget {
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
                             databaseService: databaseService,
+                            buttonColor: Theme.of(context).colorScheme.error,
+                            labelColor: Theme.of(context).colorScheme.onError,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.onError,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text('MKS INFO'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'MKS INFO',
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.errorContainer,
+                            labelColor: Theme.of(context).colorScheme.error,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.error,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('AL'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'AL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('OBI'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'OBI',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('DVL'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'DVL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                         ],
                       ),
@@ -99,44 +137,79 @@ class LeerlingScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('BuurTRDL'),
-                            ),
+                          PhoneButton(
+                            buttonName: 'Tunnel Operator',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('Mdw Rangeren'),
-                            ),
+                          const SizedBox(height: 8.0),
+                          PhoneButton(
+                            buttonName: 'BuurTRDL',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('CRA'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'Mdw Rangeren',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('Brugwachter'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'Brugwachter',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
-                          SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text('MCN 3064'),
-                            ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'MCN 3064',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                         ],
                       ),
@@ -147,28 +220,37 @@ class LeerlingScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: FilledButton(
-                        onPressed: () {},
-                        child: Text(
-                          'ALARM',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onError,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: () {},
+                          child: Text(
+                            'ALARM',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onError,
+                            ),
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('ALGEMEEN'),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('ALGEMEEN'),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('BEL MCN'),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('BEL MCN'),
+                        ),
                       ),
                     ),
                   ],

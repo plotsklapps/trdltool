@@ -1,12 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trdltool/database_service.dart';
 
-class PhoneButton extends StatelessWidget {
+class PhoneButton extends StatefulWidget {
   final String buttonName;
   final String userRole;
   final Map<String, String> buttonStates;
   final Map<String, String> buttonInitiators;
   final DatabaseService databaseService;
+  final Color buttonColor;
+  final Color labelColor;
+  final Color progressIndicatorColor;
 
   const PhoneButton({
     super.key,
@@ -15,12 +21,75 @@ class PhoneButton extends StatelessWidget {
     required this.buttonStates,
     required this.buttonInitiators,
     required this.databaseService,
+    required this.buttonColor,
+    required this.labelColor,
+    required this.progressIndicatorColor,
   });
 
   @override
+  State<PhoneButton> createState() {
+    return _PhoneButtonState();
+  }
+}
+
+class _PhoneButtonState extends State<PhoneButton> {
+  Timer? _timer;
+  int _secondsElapsed = 0;
+
+  @override
+  void didUpdateWidget(PhoneButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newState = widget.buttonStates[widget.buttonName] ?? 'rest';
+    final oldState = oldWidget.buttonStates[widget.buttonName] ?? 'rest';
+
+    if (newState == 'isActive' && oldState != 'isActive') {
+      _startTimer();
+    } else if (newState != 'isActive') {
+      _stopTimer();
+    }
+  }
+
+  void _startTimer() {
+    // Reset the counter.
+    _secondsElapsed = 0;
+
+    // Kill a possible previous timer.
+    _timer?.cancel();
+
+    // Start the timer.
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _secondsElapsed++;
+        });
+      }
+    });
+  }
+
+  void _stopTimer() {
+    // Kill the timer and reset the counter.
+    _timer?.cancel();
+    _secondsElapsed = 0;
+  }
+
+  @override
+  void dispose() {
+    // Kill the timer on dispose.
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final secs = seconds % 60;
+    final DateTime time = DateTime(0, 0, 0, 0, minutes, secs);
+    return DateFormat('mm:ss').format(time);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final state = buttonStates[buttonName] ?? 'rest';
-    final initiator = buttonInitiators[buttonName] ?? '';
+    final state = widget.buttonStates[widget.buttonName] ?? 'rest';
+    final initiator = widget.buttonInitiators[widget.buttonName] ?? '';
 
     Widget child;
     Color? backgroundColor;
@@ -28,76 +97,97 @@ class PhoneButton extends StatelessWidget {
 
     switch (state) {
       case 'isCalling':
-        if (initiator == userRole) {
-          // Current user is the caller
-          child = Stack(
+        child = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Stack(
             alignment: Alignment.center,
             children: [
               LinearProgressIndicator(
-                minHeight: 20,
+                minHeight: 32,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
                 valueColor: AlwaysStoppedAnimation(
-                  Theme.of(context).colorScheme.error,
+                  widget.progressIndicatorColor,
                 ),
-                backgroundColor: Theme.of(context).colorScheme.onError,
+                backgroundColor: widget.buttonColor,
               ),
-              Text(buttonName),
+              Text(widget.buttonName),
             ],
-          );
-          backgroundColor = Theme.of(context).colorScheme.error;
+          ),
+        );
+        backgroundColor = widget.buttonColor;
+        if (initiator == widget.userRole) {
+          // Current user is making the call..
           onPressed = () {
             // Cancel the call
-            databaseService.saveButtonPress(buttonName, userRole, 'rest');
+            widget.databaseService.saveButtonPress(
+              widget.buttonName,
+              widget.userRole,
+              'rest',
+            );
           };
         } else {
-          // Current user is the callee
-          child = Text(
-            'Je wordt gebeld!',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          );
-          backgroundColor = Theme.of(context).colorScheme.errorContainer;
+          // Current user is being called.
           onPressed = () {
-            // Accept call
-            databaseService.saveButtonPress(buttonName, userRole, 'isActive');
+            // Accept the call
+            widget.databaseService.saveButtonPress(
+              widget.buttonName,
+              widget.userRole,
+              'isActive',
+            );
           };
         }
         break;
       case 'isActive':
-        child = Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.call, color: Theme.of(context).colorScheme.onError),
-            const SizedBox(width: 8),
-            Text(
-              userRole == 'OPLEIDER' ? 'Actief' : 'In gesprek',
-              style: TextStyle(color: Theme.of(context).colorScheme.onError),
-            ),
-          ],
+        child = Text(
+          _formatTime(_secondsElapsed),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onError,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         );
         backgroundColor = Theme.of(context).colorScheme.primary;
         onPressed = () {
           // End call
-          databaseService.saveButtonPress(buttonName, userRole, 'rest');
+          widget.databaseService.saveButtonPress(
+            widget.buttonName,
+            widget.userRole,
+            'rest',
+          );
         };
         break;
       case 'rest':
       default:
         child = Text(
-          buttonName,
-          style: TextStyle(color: Theme.of(context).colorScheme.onError),
+          widget.buttonName,
+          style: TextStyle(color: widget.labelColor),
         );
-        backgroundColor = Theme.of(context).colorScheme.error;
+        backgroundColor = widget.buttonColor;
         onPressed = () {
-          databaseService.saveButtonPress(buttonName, userRole, 'isCalling');
+          widget.databaseService.saveButtonPress(
+            widget.buttonName,
+            widget.userRole,
+            'isCalling',
+          );
         };
     }
 
     return SizedBox(
       width: double.infinity,
-      child: FilledButton(
-        style: FilledButton.styleFrom(backgroundColor: backgroundColor),
-        onPressed: onPressed,
-        child: child,
+      child: Container(
+        height: 80,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Center(child: child),
+        ),
       ),
     );
   }

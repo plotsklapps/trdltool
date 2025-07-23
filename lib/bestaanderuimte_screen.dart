@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trdltool/database_service.dart';
 import 'package:trdltool/leerling_screen.dart';
-
-import 'database_service.dart';
 
 class BestaandeRuimteScreen extends StatelessWidget {
   const BestaandeRuimteScreen({super.key});
