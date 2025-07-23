@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/widgets/phone_button.dart';
 
 import 'database_service.dart';
 
@@ -21,6 +22,7 @@ class OpleiderScreen extends StatelessWidget {
       stream: database.child(path).onValue,
       builder: (context, snapshot) {
         Map<String, String> buttonStates = {};
+        Map<String, String> buttonInitiators = {};
 
         if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
           final Map<dynamic, dynamic> data =
@@ -30,6 +32,8 @@ class OpleiderScreen extends StatelessWidget {
               final buttonData = Map<String, dynamic>.from(value);
               buttonStates[buttonData['buttonName']] =
                   buttonData['state'] ?? 'rest';
+              buttonInitiators[buttonData['buttonName']] =
+                  buttonData['initiator'] ?? '';
             }
           });
         }
@@ -51,132 +55,12 @@ class OpleiderScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Builder(
-                              builder: (context) {
-                                final state =
-                                    buttonStates['MKS ALARM'] ?? 'rest';
-                                Widget child;
-                                Color? backgroundColor;
-                                VoidCallback? onPressed;
-                                switch (state) {
-                                  case 'isCalling':
-                                    child = Stack(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: LinearProgressIndicator(
-                                            minHeight: 20,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(12),
-                                            ),
-                                            valueColor: AlwaysStoppedAnimation(
-                                              Theme.of(
-                                                context,
-                                              ).colorScheme.error,
-                                            ),
-                                            backgroundColor: Theme.of(
-                                              context,
-                                            ).colorScheme.onError,
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'MKS ALARM',
-                                            style: TextStyle(),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.error;
-                                    onPressed = () {
-                                      // Pressing again cancels the call
-                                      databaseService.saveButtonPress(
-                                        'MKS ALARM',
-                                        'OPLEIDER',
-                                        'rest',
-                                      );
-                                    };
-                                    break;
-                                  case 'isCalled':
-                                    child = Text(
-                                      'Je wordt gebeld!',
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onError,
-                                      ),
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.errorContainer;
-                                    onPressed = () {
-                                      // Accept call logic here
-                                    };
-                                    break;
-                                  case 'isActive':
-                                    child = Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.call,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onError,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          'Actief',
-                                          style: TextStyle(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onError,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.primary;
-                                    onPressed = () {
-                                      // End call logic here
-                                    };
-                                    break;
-                                  case 'rest':
-                                  default:
-                                    child = Text(
-                                      'MKS ALARM',
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onError,
-                                      ),
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.error;
-                                    onPressed = () {
-                                      databaseService.saveButtonPress(
-                                        'MKS ALARM',
-                                        'OPLEIDER',
-                                        'isCalling',
-                                      );
-                                    };
-                                }
-                                return FilledButton(
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: backgroundColor,
-                                  ),
-                                  onPressed: onPressed,
-                                  child: child,
-                                );
-                              },
-                            ),
+                          PhoneButton(
+                            buttonName: 'MKS ALARM',
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                           const SizedBox(height: 16),
                           SizedBox(
@@ -210,6 +94,14 @@ class OpleiderScreen extends StatelessWidget {
                               child: const Text('DVL'),
                             ),
                           ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: const Text('Tunnel Operator'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -233,6 +125,7 @@ class OpleiderScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
+                          // TODO(plotsklapps): Deze kan eruit.
                           SizedBox(
                             width: double.infinity,
                             child: OutlinedButton(
@@ -240,6 +133,7 @@ class OpleiderScreen extends StatelessWidget {
                               child: const Text('CRA'),
                             ),
                           ),
+
                           const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,

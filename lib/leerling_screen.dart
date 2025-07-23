@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/widgets/phone_button.dart';
 
 import 'database_service.dart';
 
@@ -52,152 +53,12 @@ class LeerlingScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Builder(
-                              builder: (context) {
-                                final state =
-                                    buttonStates['MKS ALARM'] ?? 'rest';
-                                final initiator = buttonInitiators['MKS ALARM'];
-                                Widget child;
-                                Color? backgroundColor;
-                                VoidCallback? onPressed;
-
-                                // Logic for Leerling screen
-                                switch (state) {
-                                  case 'isCalling':
-                                    if (initiator == 'OPLEIDER') {
-                                      // Opleider is calling, Leerling can accept
-                                      child = Stack(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: LinearProgressIndicator(
-                                              minHeight: 20,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(12),
-                                              ),
-                                              valueColor:
-                                                  AlwaysStoppedAnimation(
-                                                    Theme.of(
-                                                      context,
-                                                    ).colorScheme.error,
-                                                  ),
-                                              backgroundColor: Theme.of(
-                                                context,
-                                              ).colorScheme.onError,
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text('MKS ALARM'),
-                                          ),
-                                        ],
-                                      );
-                                      backgroundColor = Theme.of(
-                                        context,
-                                      ).colorScheme.error;
-                                      onPressed = () {
-                                        // Leerling accepts the call
-                                        databaseService.saveButtonPress(
-                                          'MKS ALARM',
-                                          'LEERLING',
-                                          'isActive',
-                                        );
-                                      };
-                                    } else {
-                                      // Leerling is the one calling
-                                      child = LinearProgressIndicator(
-                                        minHeight: 20,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(12),
-                                        ),
-                                        valueColor: AlwaysStoppedAnimation(
-                                          Theme.of(context).colorScheme.error,
-                                        ),
-                                        backgroundColor: Theme.of(
-                                          context,
-                                        ).colorScheme.onError,
-                                      );
-                                      backgroundColor = Theme.of(
-                                        context,
-                                      ).colorScheme.error;
-                                      onPressed = () {
-                                        // Leerling cancels the call
-                                        databaseService.saveButtonPress(
-                                          'MKS ALARM',
-                                          'LEERLING',
-                                          'rest',
-                                        );
-                                      };
-                                    }
-                                    break;
-                                  case 'isActive':
-                                    child = Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.call,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onError,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'In gesprek',
-                                          style: TextStyle(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onError,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.primary;
-                                    onPressed = () {
-                                      // Both can end the call
-                                      databaseService.saveButtonPress(
-                                        'MKS ALARM',
-                                        'LEERLING',
-                                        'rest',
-                                      );
-                                    };
-                                    break;
-                                  case 'rest':
-                                  default:
-                                    child = Text(
-                                      'MKS ALARM',
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onError,
-                                      ),
-                                    );
-                                    backgroundColor = Theme.of(
-                                      context,
-                                    ).colorScheme.error;
-                                    onPressed = () {
-                                      // Leerling starts a call
-                                      databaseService.saveButtonPress(
-                                        'MKS ALARM',
-                                        'LEERLING',
-                                        'isCalling',
-                                      );
-                                    };
-                                }
-
-                                return FilledButton(
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: backgroundColor,
-                                  ),
-                                  onPressed: onPressed,
-                                  child: child,
-                                );
-                              },
-                            ),
+                          PhoneButton(
+                            buttonName: 'MKS ALARM',
+                            userRole: 'LEERLING',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                           ),
                           SizedBox(height: 16),
                           SizedBox(
