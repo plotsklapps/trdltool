@@ -1,13 +1,63 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
 import 'database_service.dart';
 
-class LeerlingScreen extends StatelessWidget {
+class LeerlingScreen extends StatefulWidget {
   const LeerlingScreen({super.key});
+
+  @override
+  State<LeerlingScreen> createState() {
+    return _LeerlingScreenState();
+  }
+}
+
+class _LeerlingScreenState extends State<LeerlingScreen> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  Map<String, String> _previousButtonStates = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-load the phone sounds for faster playback.
+    _audioPlayer.setAsset('assets/mp3/alarmtoon.mp3');
+    // Set the release mode to loop so the sound plays continuously.
+    _audioPlayer.setLoopMode(LoopMode.one);
+  }
+
+  @override
+  void dispose() {
+    // Stop and release the audio player's resources when the screen is disposed.
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _handleButtonStateChanges(Map<String, String> newButtonStates) {
+    const String alarmButton = 'MKS ALARM';
+
+    final String? newState = newButtonStates[alarmButton];
+    final String? previousState = _previousButtonStates[alarmButton];
+
+    // Check if the state has changed to 'isCalling'
+    if (newState == 'isCalling' && previousState != 'isCalling') {
+      // The leerling is being called by the opleider.
+      // Start playing the alarm sound.
+      _audioPlayer.play();
+    }
+    // Check if the state has changed away from 'isCalling'
+    else if (newState != 'isCalling' && previousState == 'isCalling') {
+      // The call was answered or cancelled.
+      // Stop the alarm sound.
+      _audioPlayer.stop();
+    }
+
+    // Update the previous states for the next comparison.
+    _previousButtonStates = Map.from(newButtonStates);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +88,8 @@ class LeerlingScreen extends StatelessWidget {
                   buttonData['initiator'] ?? '';
             }
           });
+          // After parsing the new data, check for the state change.
+          _handleButtonStateChanges(buttonStates);
         }
 
         return Scaffold(
