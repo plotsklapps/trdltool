@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:trdltool/database_service.dart';
-import 'package:trdltool/opleider_screen.dart';
-import 'package:trdltool/timer_service.dart';
+import 'package:trdltool/screens/opleider_screen.dart';
+import 'package:trdltool/services/database_service.dart';
+import 'package:trdltool/services/timer_service.dart';
 
-class NieuweRuimteScreen extends StatelessWidget {
-  const NieuweRuimteScreen({super.key});
+class CreateGRIScreen extends StatelessWidget {
+  const CreateGRIScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class NieuweRuimteScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text('Creëer nieuwe GRI'),
+                  child: const Text('Creëer GRI'),
                 ),
               ],
             ),

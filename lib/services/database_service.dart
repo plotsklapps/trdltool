@@ -5,7 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:signals/signals.dart';
-import 'package:trdltool/timer_service.dart';
+import 'package:trdltool/services/timer_service.dart';
 
 final Signal<String> sCodeOpleider = Signal<String>(
   'ABC00',

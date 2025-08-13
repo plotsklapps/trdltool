@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/widgets/phone_button.dart';
-
-import 'database_service.dart';
 
 class OpleiderScreen extends StatefulWidget {
   const OpleiderScreen({super.key});

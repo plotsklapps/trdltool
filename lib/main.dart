@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
-import 'package:trdltool/rolkeuze_screen.dart';
+import 'package:trdltool/screens/rolkeuze_screen.dart';
 
 import 'firebase_options.dart';
-import 'flex_theme.dart';
+import 'theme/flex_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

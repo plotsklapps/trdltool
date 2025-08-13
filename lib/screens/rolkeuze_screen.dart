@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toastification/toastification.dart';
-import 'package:trdltool/database_service.dart';
-import 'package:trdltool/nieuweruimte_screen.dart';
-
-import 'bestaanderuimte_screen.dart';
+import 'package:trdltool/screens/activategri_screen.dart';
+import 'package:trdltool/screens/creategri_screen.dart';
+import 'package:trdltool/services/database_service.dart';
 
 class RolKeuzeScreen extends StatelessWidget {
   const RolKeuzeScreen({super.key});
@@ -49,7 +48,7 @@ class RolKeuzeScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const NieuweRuimteScreen();
+                          return const CreateGRIScreen();
                         },
                       ),
                     );
@@ -62,7 +61,7 @@ class RolKeuzeScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const BestaandeRuimteScreen();
+                          return const ActivateGRIScreen();
                         },
                       ),
                     );

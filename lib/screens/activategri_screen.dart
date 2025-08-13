@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trdltool/database_service.dart';
-import 'package:trdltool/leerling_screen.dart';
+import 'package:trdltool/screens/leerling_screen.dart';
+import 'package:trdltool/services/database_service.dart';
 
-class BestaandeRuimteScreen extends StatelessWidget {
-  const BestaandeRuimteScreen({super.key});
+class ActivateGRIScreen extends StatelessWidget {
+  const ActivateGRIScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
