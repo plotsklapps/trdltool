@@ -119,7 +119,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
               builder: (BuildContext context, StateSetter setState) {
                 return Padding(
                   padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
                     left: 16.0,
                     right: 16.0,
                     top: 16.0,
@@ -173,7 +173,6 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                           context,
                         ).colorScheme.onPrimary,
                       ),
-                      const SizedBox(height: 16),
                     ],
                   ),
                 );
