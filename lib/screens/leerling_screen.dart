@@ -87,6 +87,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
     final String path = '$formattedDate/${sCodeLeerling.value}/buttons';
 
     showModalBottomSheet(
+      showDragHandle: true,
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
@@ -128,6 +129,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Text('Bel naar MCN...'),
+                      Divider(),
                       const SizedBox(height: 8),
                       TextField(
                         controller: _mcnController,
@@ -135,7 +137,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                         maxLength: 5,
                         textAlign: TextAlign.center,
                         decoration: const InputDecoration(
-                          hintText: 'Treinnummer',
+                          hintText: 'TREIN',
                           counterText: '',
                         ),
                         onChanged: (value) {
@@ -459,16 +461,6 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                         child: ElevatedButton(
                           onPressed: () {},
                           child: const Text('ALGEMEEN'),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('BEL MCN'),
                         ),
                       ),
                     ),

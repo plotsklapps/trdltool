@@ -225,7 +225,8 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
         final mcnCallState = buttonStates['MCN'] ?? 'rest';
         final mcnCallInitiator = buttonInitiators['MCN'] ?? '';
 
-        if (mcnCallState == 'isCalling' && mcnCallInitiator == 'LEERLING') {
+        if ((mcnCallState == 'isCalling' && mcnCallInitiator == 'LEERLING') ||
+            mcnCallState == 'isActive') {
           mcnButton = PhoneButton(
             buttonName: 'MCN',
             overrideLabel: buttonMcnNumbers['MCN'],
@@ -459,16 +460,6 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                         child: ElevatedButton(
                           onPressed: () {},
                           child: const Text('ALGEMEEN'),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('MCN'),
                         ),
                       ),
                     ),
