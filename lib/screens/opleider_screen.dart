@@ -436,7 +436,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text('BEL MCN'),
+                          child: const Text('MCN'),
                         ),
                       ),
                     ),
