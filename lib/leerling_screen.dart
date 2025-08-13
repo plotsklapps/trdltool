@@ -135,11 +135,11 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
-                            ).colorScheme.errorContainer,
-                            labelColor: Theme.of(context).colorScheme.error,
+                            ).colorScheme.primaryContainer,
+                            labelColor: Theme.of(context).colorScheme.primary,
                             progressIndicatorColor: Theme.of(
                               context,
-                            ).colorScheme.error,
+                            ).colorScheme.onPrimary,
                           ),
                           const SizedBox(height: 8),
                           PhoneButton(

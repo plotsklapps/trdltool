@@ -129,6 +129,10 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                           const SizedBox(height: 8),
                           PhoneButton(
                             buttonName: 'MKS INFO',
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
                             ).colorScheme.primaryContainer,
@@ -136,10 +140,6 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             progressIndicatorColor: Theme.of(
                               context,
                             ).colorScheme.onPrimary,
-                            userRole: 'OPLEIDER',
-                            buttonStates: buttonStates,
-                            buttonInitiators: buttonInitiators,
-                            databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
                           PhoneButton(
