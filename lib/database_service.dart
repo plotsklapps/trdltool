@@ -3,13 +3,31 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:signals/signals.dart';
 import 'package:trdltool/timer_service.dart';
 
-final Signal<String> sCodeOpleider = Signal<String>('ABC00');
-final Signal<String> sCodeLeerling = Signal<String>('ABC00');
+final Signal<String> sCodeOpleider = Signal<String>(
+  'ABC00',
+  debugLabel: 'sCodeOpleider',
+);
+final Signal<String> sCodeLeerling = Signal<String>(
+  'ABC00',
+  debugLabel: 'sCodeLeering',
+);
 
 class DatabaseService {
+  // 1. Create a static, private instance of the class.
+  static final DatabaseService _instance = DatabaseService._internal();
+
+  // 2. Create a factory constructor that returns the private instance.
+  factory DatabaseService() {
+    return _instance;
+  }
+
+  // 3. Create a private, named constructor.
+  DatabaseService._internal();
+
   final _database = FirebaseDatabase.instance.ref();
   final TimerService _timerService = TimerService();
 
@@ -95,7 +113,10 @@ class DatabaseService {
   }
 
   void saveButtonPress(String buttonName, String caller, String state) async {
-    print('Button pressed: $buttonName, Caller: $caller, New state: $state');
+    Logger().i(
+      'Button pressed: $buttonName, Caller: $caller, New state: '
+      '$state',
+    );
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final String formattedTime = DateFormat('HH:mm:ss').format(now);
@@ -107,9 +128,14 @@ class DatabaseService {
       'timestamp': formattedTime, // always set for simplicity
     };
 
-    // Use buttonName as the key so both parties update the same button entry
+    // Determine the correct code to use based on the caller's role.
+    final String code = (caller == 'LEERLING')
+        ? sCodeLeerling.value
+        : sCodeOpleider.value;
+
+    // Use buttonName as the key so both parties update the same button entry under the correct code.
     await _database
-        .child('$formattedDate/${sCodeOpleider.value}/buttons/$buttonName')
+        .child('$formattedDate/$code/buttons/$buttonName')
         .set(buttonData);
   }
 }

@@ -5,15 +5,19 @@ import 'package:signals/signals_flutter.dart';
 final Signal<int> sTimer = Signal<int>(300);
 
 class TimerService {
+  // Create a static, private instance of the class.
   static final TimerService _instance = TimerService._internal();
-  Timer? _timer;
-  final int _initialTime = 300;
 
+  // Create a factory constructor that returns the private instance.
   factory TimerService() {
     return _instance;
   }
 
+  // Create a private, named constructor.
   TimerService._internal();
+
+  Timer? _timer;
+  final int _initialTime = 300;
 
   void startTimer(Function onTimerComplete) {
     // Cancel any existing timer.

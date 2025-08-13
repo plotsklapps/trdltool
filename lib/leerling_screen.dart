@@ -36,22 +36,27 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
     super.dispose();
   }
 
-  void _handleButtonStateChanges(Map<String, String> newButtonStates) {
+  void _handleButtonStateChanges(
+    Map<String, String> newButtonStates,
+    Map<String, String> newButtonInitiators,
+  ) {
     const String alarmButton = 'MKS ALARM';
+    const String userRole = 'LEERLING';
 
     final String? newState = newButtonStates[alarmButton];
     final String? previousState = _previousButtonStates[alarmButton];
+    final String? initiator = newButtonInitiators[alarmButton];
 
-    // Check if the state has changed to 'isCalling'
-    if (newState == 'isCalling' && previousState != 'isCalling') {
-      // The leerling is being called by the opleider.
-      // Start playing the alarm sound.
+    // Check if the state has changed to 'isCalling' AND if this user is not the one who started the call.
+    if (newState == 'isCalling' &&
+        previousState != 'isCalling' &&
+        initiator != userRole) {
+      // This user is being called. Start playing the alarm sound.
       _audioPlayer.play();
     }
     // Check if the state has changed away from 'isCalling'
     else if (newState != 'isCalling' && previousState == 'isCalling') {
-      // The call was answered or cancelled.
-      // Stop the alarm sound.
+      // The call was answered or cancelled. Stop the alarm sound.
       _audioPlayer.stop();
     }
 
@@ -89,7 +94,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
             }
           });
           // After parsing the new data, check for the state change.
-          _handleButtonStateChanges(buttonStates);
+          _handleButtonStateChanges(buttonStates, buttonInitiators);
         }
 
         return Scaffold(
@@ -105,7 +110,6 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
             child: Column(
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -116,11 +120,11 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
                             databaseService: databaseService,
-                            buttonColor: Theme.of(context).colorScheme.error,
-                            labelColor: Theme.of(context).colorScheme.onError,
+                            buttonColor: Theme.of(context).colorScheme.primary,
+                            labelColor: Theme.of(context).colorScheme.onPrimary,
                             progressIndicatorColor: Theme.of(
                               context,
-                            ).colorScheme.onError,
+                            ).colorScheme.onPrimary,
                           ),
                           const SizedBox(height: 8),
                           PhoneButton(

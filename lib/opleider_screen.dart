@@ -1,13 +1,68 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
 import 'database_service.dart';
 
-class OpleiderScreen extends StatelessWidget {
+class OpleiderScreen extends StatefulWidget {
   const OpleiderScreen({super.key});
+
+  @override
+  State<OpleiderScreen> createState() {
+    return _OpleiderScreenState();
+  }
+}
+
+class _OpleiderScreenState extends State<OpleiderScreen> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  Map<String, String> _previousButtonStates = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-load the phone sounds for faster playback.
+    _audioPlayer.setAsset('assets/mp3/alarmtoon.mp3');
+    // Set the release mode to loop so the sound plays continuously.
+    _audioPlayer.setLoopMode(LoopMode.one);
+  }
+
+  @override
+  void dispose() {
+    // Stop and release the audio player's resources when the screen is disposed.
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _handleButtonStateChanges(
+    Map<String, String> newButtonStates,
+    Map<String, String> newButtonInitiators,
+  ) {
+    const String alarmButton = 'MKS ALARM';
+    const String userRole = 'OPLEIDER';
+
+    final String? newState = newButtonStates[alarmButton];
+    final String? previousState = _previousButtonStates[alarmButton];
+    final String? initiator = newButtonInitiators[alarmButton];
+
+    // Check if the state has changed to 'isCalling' AND if this user is not the one who started the call.
+    if (newState == 'isCalling' &&
+        previousState != 'isCalling' &&
+        initiator != userRole) {
+      // This user is being called. Start playing the alarm sound.
+      _audioPlayer.play();
+    }
+    // Check if the state has changed away from 'isCalling'
+    else if (newState != 'isCalling' && previousState == 'isCalling') {
+      // The call was answered or cancelled. Stop the alarm sound.
+      _audioPlayer.stop();
+    }
+
+    // Update the previous states for the next comparison.
+    _previousButtonStates = Map.from(newButtonStates);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +79,9 @@ class OpleiderScreen extends StatelessWidget {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
 
-        if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
+        if (snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data!.snapshot.value != null) {
           final Map<dynamic, dynamic> data =
               snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
           data.forEach((key, value) {
@@ -36,6 +93,8 @@ class OpleiderScreen extends StatelessWidget {
                   buttonData['initiator'] ?? '';
             }
           });
+          // After parsing the new data, check for the state change.
+          _handleButtonStateChanges(buttonStates, buttonInitiators);
         }
 
         return Scaffold(
@@ -57,15 +116,15 @@ class OpleiderScreen extends StatelessWidget {
                         children: [
                           PhoneButton(
                             buttonName: 'MKS ALARM',
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            databaseService: databaseService,
                             buttonColor: Theme.of(context).colorScheme.primary,
                             labelColor: Theme.of(context).colorScheme.onPrimary,
                             progressIndicatorColor: Theme.of(
                               context,
                             ).colorScheme.onPrimary,
-                            userRole: 'OPLEIDER',
-                            buttonStates: buttonStates,
-                            buttonInitiators: buttonInitiators,
-                            databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
                           PhoneButton(
