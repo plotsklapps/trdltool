@@ -20,6 +20,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
   final AudioPlayer _alarmtoonPlayer = AudioPlayer();
   final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = {};
+  final TextEditingController _mcnController = TextEditingController();
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
     // Stop and release the audio player's resources when the screen is disposed.
     _alarmtoonPlayer.dispose();
     _beltoonPlayer.dispose();
+    _mcnController.dispose();
     super.dispose();
   }
 
@@ -77,6 +79,111 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
     _previousButtonStates = Map.from(newButtonStates);
   }
 
+  void _showMcnCallSheet() {
+    final DatabaseReference database = FirebaseDatabase.instance.ref();
+    final String formattedDate = DateFormat(
+      'yyyy-MM-dd',
+    ).format(DateTime.now());
+    final String path = '$formattedDate/${sCodeLeerling.value}/buttons';
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return StreamBuilder<DatabaseEvent>(
+          stream: database.child(path).onValue,
+          builder: (context, snapshot) {
+            Map<String, String> buttonStates = {};
+            Map<String, String> buttonInitiators = {};
+            Map<String, String?> buttonMcnNumbers = {};
+
+            if (snapshot.hasData &&
+                snapshot.data != null &&
+                snapshot.data!.snapshot.value != null) {
+              final Map<dynamic, dynamic> data =
+                  snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+              data.forEach((key, value) {
+                if (value is Map) {
+                  final buttonData = Map<String, dynamic>.from(value);
+                  final buttonName = buttonData['buttonName'];
+                  if (buttonName != null) {
+                    buttonStates[buttonName] = buttonData['state'] ?? 'rest';
+                    buttonInitiators[buttonName] =
+                        buttonData['initiator'] ?? '';
+                    buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+                  }
+                }
+              });
+            }
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                    left: 16.0,
+                    right: 16.0,
+                    top: 16.0,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Bel naar MCN...'),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _mcnController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 5,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          hintText: 'Treinnummer',
+                          counterText: '',
+                        ),
+                        onChanged: (value) {
+                          setState(() {}); // Rebuild to update the PhoneButton
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      PhoneButton(
+                        buttonName: 'MCN',
+                        userRole: 'LEERLING',
+                        buttonStates: buttonStates,
+                        buttonInitiators: buttonInitiators,
+                        buttonMcnNumbers: buttonMcnNumbers,
+                        databaseService: DatabaseService(),
+                        onPressed: () {
+                          final mcnNumber = _mcnController.text;
+                          if (mcnNumber.isNotEmpty) {
+                            DatabaseService().saveButtonPress(
+                              'MCN',
+                              'LEERLING',
+                              'isCalling',
+                              mcnNumber: mcnNumber,
+                            );
+                          }
+                        },
+                        onCallEnded: () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        buttonColor: Theme.of(context).colorScheme.primary,
+                        labelColor: Theme.of(context).colorScheme.onPrimary,
+                        progressIndicatorColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
@@ -91,6 +198,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
       builder: (context, snapshot) {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
+        Map<String, String?> buttonMcnNumbers = {};
 
         if (snapshot.hasData &&
             snapshot.data != null &&
@@ -100,14 +208,60 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
           data.forEach((key, value) {
             if (value is Map) {
               final buttonData = Map<String, dynamic>.from(value);
-              buttonStates[buttonData['buttonName']] =
-                  buttonData['state'] ?? 'rest';
-              buttonInitiators[buttonData['buttonName']] =
-                  buttonData['initiator'] ?? '';
+              final buttonName = buttonData['buttonName'];
+              if (buttonName != null) {
+                buttonStates[buttonName] = buttonData['state'] ?? 'rest';
+                buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
+                buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+              }
             }
           });
           // After parsing the new data, check for the state change.
           _handleButtonStateChanges(buttonStates, buttonInitiators);
+        }
+
+        Widget mcnButton;
+        final mcnCallState = buttonStates['MCN'] ?? 'rest';
+        final mcnCallInitiator = buttonInitiators['MCN'] ?? '';
+
+        if ((mcnCallState == 'isCalling' && mcnCallInitiator == 'OPLEIDER') ||
+            mcnCallState == 'isActive') {
+          mcnButton = PhoneButton(
+            buttonName: 'MCN',
+            overrideLabel: buttonMcnNumbers['MCN'],
+            userRole: 'LEERLING',
+            buttonStates: buttonStates,
+            buttonInitiators: buttonInitiators,
+            buttonMcnNumbers: buttonMcnNumbers,
+            databaseService: databaseService,
+            buttonColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.onPrimary,
+            progressIndicatorColor: Theme.of(context).colorScheme.onPrimary,
+          );
+        } else {
+          mcnButton = SizedBox(
+            width: double.infinity,
+            height: 80,
+            child: ElevatedButton(
+              onPressed: () {
+                _showMcnCallSheet();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
+              ),
+              child: Text(
+                'MCN',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+            ),
+          );
         }
 
         return Scaffold(
@@ -132,6 +286,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                             buttonColor: Theme.of(context).colorScheme.primary,
                             labelColor: Theme.of(context).colorScheme.onPrimary,
@@ -145,6 +300,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
@@ -167,6 +323,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -182,6 +339,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -197,6 +355,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                         ],
@@ -218,6 +377,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8.0),
@@ -233,6 +393,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -248,6 +409,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -263,23 +425,11 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
-                          PhoneButton(
-                            buttonName: 'MCN 3064',
-                            buttonColor: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary,
-                            labelColor: Theme.of(context).colorScheme.primary,
-                            progressIndicatorColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            userRole: 'LEERLING',
-                            buttonStates: buttonStates,
-                            buttonInitiators: buttonInitiators,
-                            databaseService: databaseService,
-                          ),
+                          mcnButton,
                         ],
                       ),
                     ),

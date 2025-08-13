@@ -95,6 +95,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
           builder: (context, snapshot) {
             Map<String, String> buttonStates = {};
             Map<String, String> buttonInitiators = {};
+            Map<String, String?> buttonMcnNumbers = {};
 
             if (snapshot.hasData &&
                 snapshot.data != null &&
@@ -104,10 +105,13 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
               data.forEach((key, value) {
                 if (value is Map) {
                   final buttonData = Map<String, dynamic>.from(value);
-                  buttonStates[buttonData['buttonName']] =
-                      buttonData['state'] ?? 'rest';
-                  buttonInitiators[buttonData['buttonName']] =
-                      buttonData['initiator'] ?? '';
+                  final buttonName = buttonData['buttonName'];
+                  if (buttonName != null) {
+                    buttonStates[buttonName] = buttonData['state'] ?? 'rest';
+                    buttonInitiators[buttonName] =
+                        buttonData['initiator'] ?? '';
+                    buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+                  }
                 }
               });
             }
@@ -132,7 +136,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                         maxLength: 5,
                         textAlign: TextAlign.center,
                         decoration: const InputDecoration(
-                          hintText: 'Treinnummer',
+                          hintText: 'TREIN',
                           counterText: '',
                         ),
                         onChanged: (value) {
@@ -145,6 +149,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                         userRole: 'OPLEIDER',
                         buttonStates: buttonStates,
                         buttonInitiators: buttonInitiators,
+                        buttonMcnNumbers: buttonMcnNumbers,
                         databaseService: DatabaseService(),
                         onPressed: () {
                           final mcnNumber = _mcnController.text;
@@ -194,6 +199,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
       builder: (context, snapshot) {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
+        Map<String, String?> buttonMcnNumbers = {};
 
         if (snapshot.hasData &&
             snapshot.data != null &&
@@ -203,14 +209,59 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
           data.forEach((key, value) {
             if (value is Map) {
               final buttonData = Map<String, dynamic>.from(value);
-              buttonStates[buttonData['buttonName']] =
-                  buttonData['state'] ?? 'rest';
-              buttonInitiators[buttonData['buttonName']] =
-                  buttonData['initiator'] ?? '';
+              final buttonName = buttonData['buttonName'];
+              if (buttonName != null) {
+                buttonStates[buttonName] = buttonData['state'] ?? 'rest';
+                buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
+                buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+              }
             }
           });
           // After parsing the new data, check for the state change.
           _handleButtonStateChanges(buttonStates, buttonInitiators);
+        }
+
+        Widget mcnButton;
+        final mcnCallState = buttonStates['MCN'] ?? 'rest';
+        final mcnCallInitiator = buttonInitiators['MCN'] ?? '';
+
+        if (mcnCallState == 'isCalling' && mcnCallInitiator == 'LEERLING') {
+          mcnButton = PhoneButton(
+            buttonName: 'MCN',
+            overrideLabel: buttonMcnNumbers['MCN'],
+            userRole: 'OPLEIDER',
+            buttonStates: buttonStates,
+            buttonInitiators: buttonInitiators,
+            buttonMcnNumbers: buttonMcnNumbers,
+            databaseService: databaseService,
+            buttonColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.onPrimary,
+            progressIndicatorColor: Theme.of(context).colorScheme.onPrimary,
+          );
+        } else {
+          mcnButton = SizedBox(
+            width: double.infinity,
+            height: 80,
+            child: ElevatedButton(
+              onPressed: () {
+                _showMcnCallSheet();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
+              ),
+              child: Text(
+                'MCN',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+            ),
+          );
         }
 
         return Scaffold(
@@ -235,6 +286,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                             buttonColor: Theme.of(context).colorScheme.primary,
                             labelColor: Theme.of(context).colorScheme.onPrimary,
@@ -248,6 +300,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
@@ -270,6 +323,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -285,6 +339,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -300,6 +355,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                         ],
@@ -321,6 +377,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8.0),
@@ -336,6 +393,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -351,6 +409,7 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -366,38 +425,11 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 80,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _showMcnCallSheet();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  side: BorderSide(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                              child: Text(
-                                'MCN 3064',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ),
-                          ),
+                          mcnButton,
                         ],
                       ),
                     ),

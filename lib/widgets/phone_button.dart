@@ -9,12 +9,14 @@ class PhoneButton extends StatefulWidget {
   final String userRole;
   final Map<String, String> buttonStates;
   final Map<String, String> buttonInitiators;
+  final Map<String, String?> buttonMcnNumbers;
   final DatabaseService databaseService;
   final Color buttonColor;
   final Color labelColor;
   final Color progressIndicatorColor;
   final VoidCallback? onPressed;
   final VoidCallback? onCallEnded;
+  final String? overrideLabel;
 
   const PhoneButton({
     super.key,
@@ -22,12 +24,14 @@ class PhoneButton extends StatefulWidget {
     required this.userRole,
     required this.buttonStates,
     required this.buttonInitiators,
+    required this.buttonMcnNumbers,
     required this.databaseService,
     required this.buttonColor,
     required this.labelColor,
     required this.progressIndicatorColor,
     this.onPressed,
     this.onCallEnded,
+    this.overrideLabel,
   });
 
   @override
@@ -97,6 +101,7 @@ class _PhoneButtonState extends State<PhoneButton> {
   Widget build(BuildContext context) {
     final state = widget.buttonStates[widget.buttonName] ?? 'rest';
     final initiator = widget.buttonInitiators[widget.buttonName] ?? '';
+    final String labelText = widget.overrideLabel ?? widget.buttonName;
 
     Widget child;
     Color? backgroundColor;
@@ -117,7 +122,7 @@ class _PhoneButtonState extends State<PhoneButton> {
                 ),
                 backgroundColor: widget.buttonColor,
               ),
-              Text(widget.buttonName),
+              Text(labelText),
             ],
           ),
         );
@@ -140,6 +145,7 @@ class _PhoneButtonState extends State<PhoneButton> {
               widget.buttonName,
               widget.userRole,
               'isActive',
+              mcnNumber: widget.buttonMcnNumbers[widget.buttonName],
             );
           };
         }
@@ -165,12 +171,10 @@ class _PhoneButtonState extends State<PhoneButton> {
         break;
       case 'rest':
       default:
-        child = Text(
-          widget.buttonName,
-          style: TextStyle(color: widget.labelColor),
-        );
+        child = Text(labelText, style: TextStyle(color: widget.labelColor));
         backgroundColor = widget.buttonColor;
-        onPressed = widget.onPressed ??
+        onPressed =
+            widget.onPressed ??
             () {
               widget.databaseService.saveButtonPress(
                 widget.buttonName,
