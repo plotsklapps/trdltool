@@ -58,7 +58,7 @@ class BestaandeRuimteScreen extends StatelessWidget {
                   );
                 }
               },
-              child: const Text('Betreed Bestaande Ruimte'),
+              child: const Text('Activeer GRI'),
             ),
           ],
         ),

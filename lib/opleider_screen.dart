@@ -17,22 +17,26 @@ class OpleiderScreen extends StatefulWidget {
 }
 
 class _OpleiderScreenState extends State<OpleiderScreen> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _alarmtoonPlayer = AudioPlayer();
+  final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = {};
 
   @override
   void initState() {
     super.initState();
     // Pre-load the phone sounds for faster playback.
-    _audioPlayer.setAsset('assets/mp3/alarmtoon.mp3');
+    _alarmtoonPlayer.setAsset('assets/mp3/alarmtoon.mp3');
+    _beltoonPlayer.setAsset('assets/mp3/beltoon.mp3');
     // Set the release mode to loop so the sound plays continuously.
-    _audioPlayer.setLoopMode(LoopMode.one);
+    _alarmtoonPlayer.setLoopMode(LoopMode.one);
+    _beltoonPlayer.setLoopMode(LoopMode.one);
   }
 
   @override
   void dispose() {
     // Stop and release the audio player's resources when the screen is disposed.
-    _audioPlayer.dispose();
+    _alarmtoonPlayer.dispose();
+    _beltoonPlayer.dispose();
     super.dispose();
   }
 
@@ -40,25 +44,34 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
     Map<String, String> newButtonStates,
     Map<String, String> newButtonInitiators,
   ) {
-    const String alarmButton = 'MKS ALARM';
     const String userRole = 'OPLEIDER';
 
-    final String? newState = newButtonStates[alarmButton];
-    final String? previousState = _previousButtonStates[alarmButton];
-    final String? initiator = newButtonInitiators[alarmButton];
+    // Iterate over all buttons to check for state changes.
+    newButtonStates.forEach((buttonName, newState) {
+      final previousState = _previousButtonStates[buttonName];
+      final initiator = newButtonInitiators[buttonName];
 
-    // Check if the state has changed to 'isCalling' AND if this user is not the one who started the call.
-    if (newState == 'isCalling' &&
-        previousState != 'isCalling' &&
-        initiator != userRole) {
-      // This user is being called. Start playing the alarm sound.
-      _audioPlayer.play();
-    }
-    // Check if the state has changed away from 'isCalling'
-    else if (newState != 'isCalling' && previousState == 'isCalling') {
-      // The call was answered or cancelled. Stop the alarm sound.
-      _audioPlayer.stop();
-    }
+      // A button is being called, and this user is not the one who started it.
+      if (newState == 'isCalling' &&
+          previousState != 'isCalling' &&
+          initiator != userRole) {
+        // Decide which sound to play based on the button name.
+        if (buttonName == 'MKS ALARM' || buttonName == 'ALARM') {
+          _alarmtoonPlayer.play();
+        } else {
+          _beltoonPlayer.play();
+        }
+      }
+      // A call was answered or cancelled.
+      else if (newState != 'isCalling' && previousState == 'isCalling') {
+        // Stop the corresponding player.
+        if (buttonName == 'MKS ALARM' || buttonName == 'ALARM') {
+          _alarmtoonPlayer.stop();
+        } else {
+          _beltoonPlayer.stop();
+        }
+      }
+    });
 
     // Update the previous states for the next comparison.
     _previousButtonStates = Map.from(newButtonStates);

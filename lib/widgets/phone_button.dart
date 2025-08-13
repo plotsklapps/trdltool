@@ -146,7 +146,7 @@ class _PhoneButtonState extends State<PhoneButton> {
             fontWeight: FontWeight.bold,
           ),
         );
-        backgroundColor = Theme.of(context).colorScheme.primary;
+        backgroundColor = Theme.of(context).colorScheme.secondary;
         onPressed = () {
           // End call
           widget.databaseService.saveButtonPress(
