@@ -13,6 +13,8 @@ class PhoneButton extends StatefulWidget {
   final Color buttonColor;
   final Color labelColor;
   final Color progressIndicatorColor;
+  final VoidCallback? onPressed;
+  final VoidCallback? onCallEnded;
 
   const PhoneButton({
     super.key,
@@ -24,6 +26,8 @@ class PhoneButton extends StatefulWidget {
     required this.buttonColor,
     required this.labelColor,
     required this.progressIndicatorColor,
+    this.onPressed,
+    this.onCallEnded,
   });
 
   @override
@@ -46,6 +50,9 @@ class _PhoneButtonState extends State<PhoneButton> {
       _startTimer();
     } else if (newState != 'isActive') {
       _stopTimer();
+      if (oldState == 'isActive' && widget.onCallEnded != null) {
+        widget.onCallEnded!();
+      }
     }
   }
 
@@ -163,13 +170,14 @@ class _PhoneButtonState extends State<PhoneButton> {
           style: TextStyle(color: widget.labelColor),
         );
         backgroundColor = widget.buttonColor;
-        onPressed = () {
-          widget.databaseService.saveButtonPress(
-            widget.buttonName,
-            widget.userRole,
-            'isCalling',
-          );
-        };
+        onPressed = widget.onPressed ??
+            () {
+              widget.databaseService.saveButtonPress(
+                widget.buttonName,
+                widget.userRole,
+                'isCalling',
+              );
+            };
     }
 
     return SizedBox(

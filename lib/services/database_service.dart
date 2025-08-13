@@ -70,6 +70,7 @@ class DatabaseService {
           'state': 'rest',
           'initiator': null,
           'timestamp': null,
+          'mcnNumber': null,
         },
     };
 
@@ -112,10 +113,15 @@ class DatabaseService {
     return false;
   }
 
-  void saveButtonPress(String buttonName, String caller, String state) async {
+  void saveButtonPress(
+    String buttonName,
+    String caller,
+    String state, {
+    String? mcnNumber,
+  }) async {
     Logger().i(
-      'Button pressed: $buttonName, Caller: $caller, New state: '
-      '$state',
+      'Button pressed: $buttonName, MCN: $mcnNumber, Caller: $caller, New '
+      'state: $state,',
     );
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
@@ -126,6 +132,7 @@ class DatabaseService {
       'state': state, // 'rest', 'calling', 'called', 'active'
       'initiator': caller, // 'opleider' or 'leerling'
       'timestamp': formattedTime, // always set for simplicity
+      'mcnNumber': mcnNumber, // only for 'MCN' button
     };
 
     // Determine the correct code to use based on the caller's role.
@@ -133,7 +140,8 @@ class DatabaseService {
         ? sCodeLeerling.value
         : sCodeOpleider.value;
 
-    // Use buttonName as the key so both parties update the same button entry under the correct code.
+    // Use buttonName as the key so both parties update the same button
+    // entry under the correct code.
     await _database
         .child('$formattedDate/$code/buttons/$buttonName')
         .set(buttonData);
