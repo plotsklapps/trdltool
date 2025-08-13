@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/services/database_service.dart';
+import 'package:trdltool/widgets/mcn_button.dart';
+import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
 class OpleiderScreen extends StatefulWidget {
@@ -78,112 +80,6 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
     _previousButtonStates = Map.from(newButtonStates);
   }
 
-  void _showMcnCallSheet() {
-    final DatabaseReference database = FirebaseDatabase.instance.ref();
-    final String formattedDate = DateFormat(
-      'yyyy-MM-dd',
-    ).format(DateTime.now());
-    final String path = '$formattedDate/${sCodeOpleider.value}/buttons';
-
-    showModalBottomSheet(
-      showDragHandle: true,
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return StreamBuilder<DatabaseEvent>(
-          stream: database.child(path).onValue,
-          builder: (context, snapshot) {
-            Map<String, String> buttonStates = {};
-            Map<String, String> buttonInitiators = {};
-            Map<String, String?> buttonMcnNumbers = {};
-
-            if (snapshot.hasData &&
-                snapshot.data != null &&
-                snapshot.data!.snapshot.value != null) {
-              final Map<dynamic, dynamic> data =
-                  snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-              data.forEach((key, value) {
-                if (value is Map) {
-                  final buttonData = Map<String, dynamic>.from(value);
-                  final buttonName = buttonData['buttonName'];
-                  if (buttonName != null) {
-                    buttonStates[buttonName] = buttonData['state'] ?? 'rest';
-                    buttonInitiators[buttonName] =
-                        buttonData['initiator'] ?? '';
-                    buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
-                  }
-                }
-              });
-            }
-            return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                    left: 16.0,
-                    right: 16.0,
-                    top: 16.0,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text('Bel als MCN van...'),
-                      Divider(),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller: _mcnController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 5,
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                          hintText: 'TREIN',
-                          counterText: '',
-                        ),
-                        onChanged: (value) {
-                          setState(() {}); // Rebuild to update the PhoneButton
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      PhoneButton(
-                        buttonName: 'MCN',
-                        userRole: 'OPLEIDER',
-                        buttonStates: buttonStates,
-                        buttonInitiators: buttonInitiators,
-                        buttonMcnNumbers: buttonMcnNumbers,
-                        databaseService: DatabaseService(),
-                        onPressed: () {
-                          final mcnNumber = _mcnController.text;
-                          if (mcnNumber.isNotEmpty) {
-                            DatabaseService().saveButtonPress(
-                              'MCN',
-                              'OPLEIDER',
-                              'isCalling',
-                              mcnNumber: mcnNumber,
-                            );
-                          }
-                        },
-                        onCallEnded: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        buttonColor: Theme.of(context).colorScheme.primary,
-                        labelColor: Theme.of(context).colorScheme.onPrimary,
-                        progressIndicatorColor: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final DatabaseService databaseService = DatabaseService();
@@ -218,50 +114,6 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
           });
           // After parsing the new data, check for the state change.
           _handleButtonStateChanges(buttonStates, buttonInitiators);
-        }
-
-        Widget mcnButton;
-        final mcnCallState = buttonStates['MCN'] ?? 'rest';
-        final mcnCallInitiator = buttonInitiators['MCN'] ?? '';
-
-        if ((mcnCallState == 'isCalling' && mcnCallInitiator == 'LEERLING') ||
-            mcnCallState == 'isActive') {
-          mcnButton = PhoneButton(
-            buttonName: 'MCN',
-            overrideLabel: buttonMcnNumbers['MCN'],
-            userRole: 'OPLEIDER',
-            buttonStates: buttonStates,
-            buttonInitiators: buttonInitiators,
-            buttonMcnNumbers: buttonMcnNumbers,
-            databaseService: databaseService,
-            buttonColor: Theme.of(context).colorScheme.primary,
-            labelColor: Theme.of(context).colorScheme.onPrimary,
-            progressIndicatorColor: Theme.of(context).colorScheme.onPrimary,
-          );
-        } else {
-          mcnButton = SizedBox(
-            width: double.infinity,
-            height: 80,
-            child: ElevatedButton(
-              onPressed: () {
-                _showMcnCallSheet();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
-              ),
-              child: Text(
-                'MCN',
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-            ),
-          );
         }
 
         return Scaffold(
@@ -429,7 +281,23 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
-                          mcnButton,
+                          McnButton(
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            buttonMcnNumbers: buttonMcnNumbers,
+                            databaseService: databaseService,
+                            onShowMcnCallSheet: () {
+                              showMcnCallSheet(
+                                context: context,
+                                userRole: 'OPLEIDER',
+                                databasePath: path,
+                                mcnController: _mcnController,
+                                title: 'Bel als MCN van...',
+                                hintText: 'TREIN',
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
