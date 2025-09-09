@@ -5,8 +5,8 @@ import 'package:trdltool/screens/activategri_screen.dart';
 import 'package:trdltool/screens/creategri_screen.dart';
 import 'package:trdltool/services/database_service.dart';
 
-class RolKeuzeScreen extends StatelessWidget {
-  const RolKeuzeScreen({super.key});
+class RoleChoiceScreen extends StatelessWidget {
+  const RoleChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,8 @@ class RolKeuzeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                FilledButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     databaseService.generateCode();
 
                     Navigator.push(
@@ -53,10 +53,24 @@ class RolKeuzeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Opleider'),
+                  child: SizedBox(
+                    width: 160,
+                    child: Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      // InkWell provides the tap effect.
+                      child: Center(child: Text('Opleider')),
+                    ),
+                  ),
                 ),
-                FilledButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -66,7 +80,29 @@ class RolKeuzeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Leerling'),
+                  child: SizedBox(
+                    width: 160,
+                    child: Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      // InkWell provides the tap effect.
+                      child: Center(
+                        child: Text(
+                          'Leerling',
+                          style: (TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          )),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

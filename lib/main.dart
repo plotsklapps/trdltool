@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'TRDLtool',
         theme: AppTheme.light,
-        home: const RolKeuzeScreen(),
+        home: const RoleChoiceScreen(),
       ),
     );
   }
