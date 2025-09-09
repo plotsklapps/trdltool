@@ -8,16 +8,16 @@ import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
-class OpleiderScreen extends StatefulWidget {
-  const OpleiderScreen({super.key});
+class TeacherScreen extends StatefulWidget {
+  const TeacherScreen({super.key});
 
   @override
-  State<OpleiderScreen> createState() {
-    return _OpleiderScreenState();
+  State<TeacherScreen> createState() {
+    return _TeacherScreenState();
   }
 }
 
-class _OpleiderScreenState extends State<OpleiderScreen> {
+class _TeacherScreenState extends State<TeacherScreen> {
   final AudioPlayer _alarmtoonPlayer = AudioPlayer();
   final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = {};
@@ -309,24 +309,58 @@ class _OpleiderScreenState extends State<OpleiderScreen> {
                     Expanded(
                       child: SizedBox(
                         width: double.infinity,
-                        child: FilledButton(
-                          onPressed: () {},
-                          child: Text(
-                            'ALARM',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onError,
+                        child: Container(
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          // InkWell provides the tap effect.
+                          child: InkWell(
+                            onTap: () {},
+                            child: Center(
+                              child: Text(
+                                'ALARM',
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('ALGEMEEN'),
+                        child: Container(
+                          height: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          // InkWell provides the tap effect.
+                          child: InkWell(
+                            onTap: () {},
+                            child: Center(
+                              child: Text(
+                                'ALGEMEEN',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

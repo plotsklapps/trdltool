@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:trdltool/screens/opleider_screen.dart';
+import 'package:trdltool/screens/teacher_screen.dart';
 import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/services/timer_service.dart';
 
@@ -55,8 +55,8 @@ class CreateGRIScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FilledButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     databaseService.saveCodeToDatabase();
 
                     timerService.cancelTimer();
@@ -65,12 +65,26 @@ class CreateGRIScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const OpleiderScreen();
+                          return const TeacherScreen();
                         },
                       ),
                     );
                   },
-                  child: const Text('Creëer GRI'),
+                  child: SizedBox(
+                    width: 160,
+                    child: Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      // InkWell provides the tap effect.
+                      child: Center(child: Text('Creëer GRI')),
+                    ),
+                  ),
                 ),
               ],
             ),

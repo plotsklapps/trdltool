@@ -214,7 +214,6 @@ class _PhoneButtonState extends State<PhoneButton> {
             };
     }
 
-    // This is the main container for the button.
     return SizedBox(
       width: double.infinity,
       child: Container(

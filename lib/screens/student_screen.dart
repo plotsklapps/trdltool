@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/widgets/alarm_call_sheet.dart';
 import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
@@ -308,26 +309,62 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: () {},
-                          child: Text(
-                            'ALARM',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onError,
+                      child: InkWell(
+                        onTap: () {
+                          showAlarmCallSheet(context: context);
+                        },
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            // InkWell provides the tap effect.
+                            child: Center(
+                              child: Text(
+                                'ALARM',
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('ALGEMEEN'),
+                        child: Container(
+                          height: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          // InkWell provides the tap effect.
+                          child: InkWell(
+                            onTap: () {},
+                            child: Center(
+                              child: Text(
+                                'ALGEMEEN',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

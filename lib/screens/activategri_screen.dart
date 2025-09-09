@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trdltool/screens/leerling_screen.dart';
+import 'package:trdltool/screens/student_screen.dart';
 import 'package:trdltool/services/database_service.dart';
 
 class ActivateGRIScreen extends StatelessWidget {
@@ -11,7 +11,13 @@ class ActivateGRIScreen extends StatelessWidget {
     final DatabaseService databaseService = DatabaseService();
     final TextEditingController codeController = TextEditingController();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Nieuwe GRI',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -32,8 +38,8 @@ class ActivateGRIScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 36),
-            FilledButton(
-              onPressed: () async {
+            InkWell(
+              onTap: () async {
                 // Check if the code is valid.
                 final isValid = await databaseService.validateCodeFromDatabase(
                   sCodeLeerling.value,
@@ -58,7 +64,29 @@ class ActivateGRIScreen extends StatelessWidget {
                   );
                 }
               },
-              child: const Text('Activeer GRI'),
+              child: SizedBox(
+                width: 160,
+                child: Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  // InkWell provides the tap effect.
+                  child: Center(
+                    child: Text(
+                      'Activeer GRI',
+                      style: (TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      )),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
