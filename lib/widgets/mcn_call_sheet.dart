@@ -3,36 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
-// Displays a modal bottom sheet for making MCN calls.
-// This sheet contains a text field for the MCN number
-// and a button to initiate the call.
 void showMcnCallSheet({
-  // The context from which the sheet is shown.
   required BuildContext context,
-  // The role of the current user, e.g., 'LEERLING'.
   required String userRole,
-  // The Firebase path to listen for button state changes.
   required String databasePath,
-  // The controller for the MCN number text field.
   required TextEditingController mcnController,
-  // The title displayed at the top of the sheet.
   required String title,
-  // The hint text for the text field.
   required String hintText,
 }) {
   showModalBottomSheet(
     showDragHandle: true,
-    context: context,
-    // Allows the sheet to resize when the keyboard appears.
     isScrollControlled: true,
+    context: context,
     builder: (BuildContext context) {
-      // StreamBuilder listens to real-time database changes.
+      // Use Streambuilder to listen for changes in the database.
       return StreamBuilder<DatabaseEvent>(
         stream: FirebaseDatabase.instance.ref().child(databasePath).onValue,
         builder: (context, snapshot) {
           Map<String, String> buttonStates = {};
           Map<String, String> buttonInitiators = {};
-          Map<String, String?> buttonMcnNumbers = {};
+          Map<String, String?> buttonDetails = {};
 
           // Check if the snapshot has valid data.
           if (snapshot.hasData &&
@@ -49,11 +39,12 @@ void showMcnCallSheet({
                   // Populate the maps with button data.
                   buttonStates[buttonName] = buttonData['state'] ?? 'rest';
                   buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
-                  buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+                  buttonDetails[buttonName] = buttonData['details'];
                 }
               }
             });
           }
+
           // Padding to avoid the keyboard.
           return Padding(
             padding: EdgeInsets.only(
@@ -86,17 +77,17 @@ void showMcnCallSheet({
                   userRole: userRole,
                   buttonStates: buttonStates,
                   buttonInitiators: buttonInitiators,
-                  buttonMcnNumbers: buttonMcnNumbers,
+                  buttonDetails: buttonDetails,
                   databaseService: DatabaseService(),
                   onPressed: () {
-                    final mcnNumber = mcnController.text;
+                    final details = mcnController.text;
                     // Only make the call if a number is entered.
-                    if (mcnNumber.isNotEmpty) {
+                    if (details.isNotEmpty) {
                       DatabaseService().saveButtonPress(
                         'MCN',
                         userRole,
                         'isCalling',
-                        mcnNumber: mcnNumber,
+                        details: details,
                       );
                     }
                   },

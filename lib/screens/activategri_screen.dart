@@ -51,7 +51,7 @@ class ActivateGRIScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const LeerlingScreen();
+                        return const StudentScreen();
                       },
                     ),
                   );

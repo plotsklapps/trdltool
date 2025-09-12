@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/services/database_service.dart';
+import 'package:trdltool/widgets/alarm_button.dart';
 import 'package:trdltool/widgets/alarm_call_sheet.dart';
 import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
-import '../services/database_service.dart';
-
-class LeerlingScreen extends StatefulWidget {
-  const LeerlingScreen({super.key});
+class StudentScreen extends StatefulWidget {
+  const StudentScreen({super.key});
 
   @override
-  State<LeerlingScreen> createState() {
-    return _LeerlingScreenState();
+  State<StudentScreen> createState() {
+    return _StudentScreenState();
   }
 }
 
-class _LeerlingScreenState extends State<LeerlingScreen> {
+class _StudentScreenState extends State<StudentScreen> {
   final AudioPlayer _alarmtoonPlayer = AudioPlayer();
   final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = {};
@@ -96,7 +96,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
       builder: (context, snapshot) {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
-        Map<String, String?> buttonMcnNumbers = {};
+        Map<String, String?> buttonDetails = {};
 
         if (snapshot.hasData &&
             snapshot.data != null &&
@@ -110,7 +110,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
               if (buttonName != null) {
                 buttonStates[buttonName] = buttonData['state'] ?? 'rest';
                 buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
-                buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+                buttonDetails[buttonName] = buttonData['details'];
               }
             }
           });
@@ -140,7 +140,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             buttonColor: Theme.of(context).colorScheme.primary,
                             labelColor: Theme.of(context).colorScheme.onPrimary,
@@ -154,7 +154,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
@@ -177,7 +177,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -193,7 +193,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -209,7 +209,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                         ],
@@ -231,7 +231,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8.0),
@@ -247,7 +247,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -263,7 +263,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -279,7 +279,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -287,7 +287,7 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                             userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             onShowMcnCallSheet: () {
                               showMcnCallSheet(
@@ -305,39 +305,26 @@ class _LeerlingScreenState extends State<LeerlingScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          showAlarmCallSheet(context: context);
+                      child: AlarmButton(
+                        userRole: 'LEERLING',
+                        buttonStates: buttonStates,
+                        buttonInitiators: buttonInitiators,
+                        buttonDetails: buttonDetails,
+                        databaseService: databaseService,
+                        onPressed: () {
+                          showAlarmCallSheet(
+                            context: context,
+                            userRole: 'LEERLING',
+                            databasePath: path,
+                            mcnController: _mcnController,
+                            title: 'Alarmgebied',
+                            hintText: 'Kies gebied',
+                          );
                         },
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Container(
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            // InkWell provides the tap effect.
-                            child: Center(
-                              child: Text(
-                                'ALARM',
-                                style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(width: 8),

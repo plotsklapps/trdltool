@@ -70,7 +70,7 @@ class DatabaseService {
           'state': 'rest',
           'initiator': null,
           'timestamp': null,
-          'mcnNumber': null,
+          'details': null,
         },
     };
 
@@ -117,10 +117,10 @@ class DatabaseService {
     String buttonName,
     String caller,
     String state, {
-    String? mcnNumber,
+    String? details,
   }) async {
     Logger().i(
-      'Button pressed: $buttonName, MCN: $mcnNumber, Caller: $caller, New '
+      'Button pressed: $buttonName, Details: $details, Caller: $caller, New '
       'state: $state,',
     );
     final DateTime now = DateTime.now();
@@ -132,7 +132,7 @@ class DatabaseService {
       'state': state, // 'rest', 'calling', 'called', 'active'
       'initiator': caller, // 'opleider' or 'leerling'
       'timestamp': formattedTime, // always set for simplicity
-      'mcnNumber': mcnNumber, // only for 'MCN' button
+      'details': details, // Can be MCN number, alarm area, etc.
     };
 
     // Determine the correct code to use based on the caller's role.

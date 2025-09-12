@@ -15,8 +15,8 @@ class PhoneButton extends StatefulWidget {
   final Map<String, String> buttonStates;
   // Map with the initiator for each call.
   final Map<String, String> buttonInitiators;
-  // Map with the MCN number for a call, if any.
-  final Map<String, String?> buttonMcnNumbers;
+  // Map with details for a call, if any.
+  final Map<String, String?> buttonDetails;
   // Instance of the database service for Firebase.
   final DatabaseService databaseService;
   // The base color of the button.
@@ -38,7 +38,7 @@ class PhoneButton extends StatefulWidget {
     required this.userRole,
     required this.buttonStates,
     required this.buttonInitiators,
-    required this.buttonMcnNumbers,
+    required this.buttonDetails,
     required this.databaseService,
     required this.buttonColor,
     required this.labelColor,
@@ -125,8 +125,14 @@ class _PhoneButtonState extends State<PhoneButton> {
     // Get the state and initiator for this specific button.
     final state = widget.buttonStates[widget.buttonName] ?? 'rest';
     final initiator = widget.buttonInitiators[widget.buttonName] ?? '';
+    final details = widget.buttonDetails[widget.buttonName];
+
     // Use overrideLabel if provided, otherwise buttonName.
-    final String labelText = widget.overrideLabel ?? widget.buttonName;
+    // If details are available, append them to the label.
+    String labelText = widget.overrideLabel ?? widget.buttonName;
+    if (details != null && details.isNotEmpty) {
+      labelText = '$labelText $details';
+    }
 
     Widget child;
     Color? backgroundColor;
@@ -172,7 +178,7 @@ class _PhoneButtonState extends State<PhoneButton> {
               widget.buttonName,
               widget.userRole,
               'isActive',
-              mcnNumber: widget.buttonMcnNumbers[widget.buttonName],
+              details: widget.buttonDetails[widget.buttonName],
             );
           };
         }

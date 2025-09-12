@@ -3,28 +3,12 @@ import 'package:trdltool/services/database_service.dart';
 
 import 'phone_button.dart';
 
-// A dynamic button for MCN calls that changes its
-// appearance and behavior based on the call state.
-// It can show an active call button or a passive one.
 class McnButton extends StatelessWidget {
-  // Role of the current user, e.g., 'LEERLING'.
   final String userRole;
-
-  // Map with the current state of all buttons.
-  // e.g., 'isCalling', 'isActive'.
   final Map<String, String> buttonStates;
-
-  // Map with the initiator for each call.
   final Map<String, String> buttonInitiators;
-
-  // Map with the MCN number for a call, if any.
-  final Map<String, String?> buttonMcnNumbers;
-
-  // Instance of the database service.
-  // Used for Firebase communication.
+  final Map<String, String?> buttonDetails;
   final DatabaseService databaseService;
-
-  // Callback to show the MCN call sheet.
   final VoidCallback onShowMcnCallSheet;
 
   const McnButton({
@@ -32,7 +16,7 @@ class McnButton extends StatelessWidget {
     required this.userRole,
     required this.buttonStates,
     required this.buttonInitiators,
-    required this.buttonMcnNumbers,
+    required this.buttonDetails,
     required this.databaseService,
     required this.onShowMcnCallSheet,
   });
@@ -54,11 +38,11 @@ class McnButton extends StatelessWidget {
         mcnCallState == 'isActive') {
       return PhoneButton(
         buttonName: 'MCN',
-        overrideLabel: buttonMcnNumbers['MCN'],
+        overrideLabel: buttonDetails['MCN'],
         userRole: userRole,
         buttonStates: buttonStates,
         buttonInitiators: buttonInitiators,
-        buttonMcnNumbers: buttonMcnNumbers,
+        buttonDetails: buttonDetails,
         databaseService: databaseService,
         buttonColor: Theme.of(context).colorScheme.primary,
         labelColor: Theme.of(context).colorScheme.onPrimary,

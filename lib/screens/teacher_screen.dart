@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/services/database_service.dart';
+import 'package:trdltool/widgets/alarm_button.dart';
+import 'package:trdltool/widgets/alarm_call_sheet.dart';
 import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
@@ -22,6 +24,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
   final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = {};
   final TextEditingController _mcnController = TextEditingController();
+  final TextEditingController _alarmMcnController = TextEditingController();
 
   @override
   void initState() {
@@ -40,6 +43,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
     _alarmtoonPlayer.dispose();
     _beltoonPlayer.dispose();
     _mcnController.dispose();
+    _alarmMcnController.dispose();
     super.dispose();
   }
 
@@ -94,7 +98,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
       builder: (context, snapshot) {
         Map<String, String> buttonStates = {};
         Map<String, String> buttonInitiators = {};
-        Map<String, String?> buttonMcnNumbers = {};
+        Map<String, String?> buttonDetails = {};
 
         if (snapshot.hasData &&
             snapshot.data != null &&
@@ -108,7 +112,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
               if (buttonName != null) {
                 buttonStates[buttonName] = buttonData['state'] ?? 'rest';
                 buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
-                buttonMcnNumbers[buttonName] = buttonData['mcnNumber'];
+                buttonDetails[buttonName] = buttonData['details'];
               }
             }
           });
@@ -138,7 +142,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             buttonColor: Theme.of(context).colorScheme.primary,
                             labelColor: Theme.of(context).colorScheme.onPrimary,
@@ -152,7 +156,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             buttonColor: Theme.of(
                               context,
@@ -175,7 +179,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -191,7 +195,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -207,7 +211,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                         ],
@@ -229,7 +233,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8.0),
@@ -245,7 +249,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -261,7 +265,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -277,7 +281,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
                           const SizedBox(height: 8),
@@ -285,7 +289,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             userRole: 'OPLEIDER',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
-                            buttonMcnNumbers: buttonMcnNumbers,
+                            buttonDetails: buttonDetails,
                             databaseService: databaseService,
                             onShowMcnCallSheet: () {
                               showMcnCallSheet(
@@ -303,37 +307,26 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          // InkWell provides the tap effect.
-                          child: InkWell(
-                            onTap: () {},
-                            child: Center(
-                              child: Text(
-                                'ALARM',
-                                style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      child: AlarmButton(
+                        userRole: 'OPLEIDER',
+                        buttonStates: buttonStates,
+                        buttonInitiators: buttonInitiators,
+                        buttonDetails: buttonDetails,
+                        databaseService: databaseService,
+                        onPressed: () {
+                          showAlarmCallSheet(
+                            context: context,
+                            userRole: 'OPLEIDER',
+                            mcnController: _alarmMcnController,
+                            databasePath: path,
+                            title: 'Alarmeer als MCN van...',
+                            hintText: 'TREIN',
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 8),
