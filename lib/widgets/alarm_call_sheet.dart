@@ -42,101 +42,123 @@ void showAlarmCallSheet({
             children: [
               Text('Alarmgebied'),
               Divider(),
+              const SizedBox(height: 8),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PhoneButton(
-                    buttonName: 'NOORD',
-                    userRole: userRole,
-                    buttonStates: {},
-                    buttonInitiators: {},
-                    buttonDetails: {},
-                    databaseService: DatabaseService(),
-                    onPressed: () {
-                      handleAlarmAreaPressed('NOORD');
-                    },
-                    buttonColor: Theme.of(context).colorScheme.primary,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    progressIndicatorColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary,
+                  // Invisible placeholder to match the middle row's structure
+                  Expanded(child: Container()),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: PhoneButton(
+                      buttonName: 'NOORD',
+                      userRole: userRole,
+                      buttonStates: {},
+                      buttonInitiators: {},
+                      buttonDetails: {},
+                      databaseService: DatabaseService(),
+                      onPressed: () {
+                        handleAlarmAreaPressed('NOORD');
+                      },
+                      buttonColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      progressIndicatorColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // Invisible placeholder
+                  Expanded(child: Container()),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: PhoneButton(
+                      buttonName: 'WEST',
+                      userRole: userRole,
+                      buttonStates: {},
+                      buttonInitiators: {},
+                      buttonDetails: {},
+                      databaseService: DatabaseService(),
+                      onPressed: () {
+                        handleAlarmAreaPressed('WEST');
+                      },
+                      buttonColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      progressIndicatorColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: PhoneButton(
+                      buttonName: 'CENTRUM',
+                      userRole: userRole,
+                      buttonStates: {},
+                      buttonInitiators: {},
+                      buttonDetails: {},
+                      databaseService: DatabaseService(),
+                      onPressed: () {
+                        handleAlarmAreaPressed('CENTRUM');
+                      },
+                      buttonColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      progressIndicatorColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: PhoneButton(
+                      buttonName: 'OOST',
+                      userRole: userRole,
+                      buttonStates: {},
+                      buttonInitiators: {},
+                      buttonDetails: {},
+                      databaseService: DatabaseService(),
+                      onPressed: () {
+                        handleAlarmAreaPressed('OOST');
+                      },
+                      buttonColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      progressIndicatorColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  PhoneButton(
-                    buttonName: 'WEST',
-                    userRole: userRole,
-                    buttonStates: {},
-                    buttonInitiators: {},
-                    buttonDetails: {},
-                    databaseService: DatabaseService(),
-                    onPressed: () {
-                      handleAlarmAreaPressed('WEST');
-                    },
-                    buttonColor: Theme.of(context).colorScheme.primary,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    progressIndicatorColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary,
+                  // Invisible placeholder to match the middle row's structure
+                  Expanded(child: Container()),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: PhoneButton(
+                      buttonName: 'ZUID',
+                      userRole: userRole,
+                      buttonStates: {},
+                      buttonInitiators: {},
+                      buttonDetails: {},
+                      databaseService: DatabaseService(),
+                      onPressed: () {
+                        handleAlarmAreaPressed('ZUID');
+                      },
+                      buttonColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      progressIndicatorColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary,
+                    ),
                   ),
-                  PhoneButton(
-                    buttonName: 'CENTRUM',
-                    userRole: userRole,
-                    buttonStates: {},
-                    buttonInitiators: {},
-                    buttonDetails: {},
-                    databaseService: DatabaseService(),
-                    onPressed: () {
-                      handleAlarmAreaPressed('CENTRUM');
-                    },
-                    buttonColor: Theme.of(context).colorScheme.primary,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    progressIndicatorColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary,
-                  ),
-                  PhoneButton(
-                    buttonName: 'OOST',
-                    userRole: userRole,
-                    buttonStates: {},
-                    buttonInitiators: {},
-                    buttonDetails: {},
-                    databaseService: DatabaseService(),
-                    onPressed: () {
-                      handleAlarmAreaPressed('OOST');
-                    },
-                    buttonColor: Theme.of(context).colorScheme.primary,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    progressIndicatorColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PhoneButton(
-                    buttonName: 'ZUID',
-                    userRole: userRole,
-                    buttonStates: {},
-                    buttonInitiators: {},
-                    buttonDetails: {},
-                    databaseService: DatabaseService(),
-                    onPressed: () {
-                      handleAlarmAreaPressed('ZUID');
-                    },
-                    buttonColor: Theme.of(context).colorScheme.primary,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    progressIndicatorColor: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary,
-                  ),
+                  const SizedBox(width: 8),
+                  // Invisible placeholder
+                  Expanded(child: Container()),
                 ],
               ),
             ],
