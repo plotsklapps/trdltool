@@ -38,7 +38,6 @@ class McnButton extends StatelessWidget {
         mcnCallState == 'isActive') {
       return PhoneButton(
         buttonName: 'MCN',
-        overrideLabel: buttonDetails['MCN'],
         userRole: userRole,
         buttonStates: buttonStates,
         buttonInitiators: buttonInitiators,
