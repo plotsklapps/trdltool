@@ -6,6 +6,8 @@ import 'package:signals/signals_flutter.dart';
 import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/widgets/alarm_button.dart';
 import 'package:trdltool/widgets/alarm_call_sheet.dart';
+import 'package:trdltool/widgets/general_button.dart';
+import 'package:trdltool/widgets/general_call_sheet.dart';
 import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
 import 'package:trdltool/widgets/phone_button.dart';
@@ -331,30 +333,22 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          height: 80,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          // InkWell provides the tap effect.
-                          child: InkWell(
-                            onTap: () {},
-                            child: Center(
-                              child: Text(
-                                'ALGEMEEN',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      child: GeneralButton(
+                        userRole: 'OPLEIDER',
+                        buttonStates: buttonStates,
+                        buttonInitiators: buttonInitiators,
+                        buttonDetails: buttonDetails,
+                        databaseService: databaseService,
+                        onPressed: () {
+                          showGeneralCallSheet(
+                            context: context,
+                            userRole: 'OPLEIDER',
+                            databasePath: path,
+                            mcnController: _mcnController,
+                            title: 'Algemene Oproep',
+                            hintText: 'Kies gebied',
+                          );
+                        },
                       ),
                     ),
                   ],
