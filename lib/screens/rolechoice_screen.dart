@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toastification/toastification.dart';
 import 'package:trdltool/screens/activategri_screen.dart';
 import 'package:trdltool/screens/creategri_screen.dart';
 import 'package:trdltool/services/database_service.dart';
+import 'package:web/web.dart' as web;
 
 class RoleChoiceScreen extends StatelessWidget {
   const RoleChoiceScreen({super.key});
@@ -17,12 +17,32 @@ class RoleChoiceScreen extends StatelessWidget {
         leading: Center(
           child: InkWell(
             onTap: () {
-              toastification.show(
-                alignment: Alignment.bottomCenter,
-                style: ToastificationStyle.flatColored,
-                icon: FaIcon(FontAwesomeIcons.rocket),
-                title: Text('Functionaliteit zal worden uitgebreid.'),
-                description: Text('Kom snel terug voor een nieuwe update!'),
+              showModalBottomSheet(
+                showDragHandle: true,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Nieuwe updates'),
+                        Divider(),
+                        ListTile(
+                          title: Text('Versie 0.0.1 beta'),
+                          subtitle: Text(
+                            'Herlaad de app om nieuwe updates te installeren',
+                          ),
+                          trailing: Icon(Icons.refresh),
+                          onTap: () {
+                            web.window.location.reload();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
               );
             },
             child: FaIcon(FontAwesomeIcons.bars),

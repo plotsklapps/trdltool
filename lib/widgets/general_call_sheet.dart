@@ -59,8 +59,8 @@ void showGeneralCallSheet({
                       onPressed: () {
                         handleGeneralAreaPressed('NOORD');
                       },
-                      buttonColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      buttonColor: Theme.of(context).colorScheme.onPrimary,
+                      labelColor: Theme.of(context).colorScheme.primary,
                       progressIndicatorColor: Theme.of(
                         context,
                       ).colorScheme.onPrimary,
@@ -85,8 +85,8 @@ void showGeneralCallSheet({
                       onPressed: () {
                         handleGeneralAreaPressed('WEST');
                       },
-                      buttonColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      buttonColor: Theme.of(context).colorScheme.onPrimary,
+                      labelColor: Theme.of(context).colorScheme.primary,
                       progressIndicatorColor: Theme.of(
                         context,
                       ).colorScheme.onPrimary,
@@ -104,8 +104,8 @@ void showGeneralCallSheet({
                       onPressed: () {
                         handleGeneralAreaPressed('CENTRUM');
                       },
-                      buttonColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      buttonColor: Theme.of(context).colorScheme.onPrimary,
+                      labelColor: Theme.of(context).colorScheme.primary,
                       progressIndicatorColor: Theme.of(
                         context,
                       ).colorScheme.onPrimary,
@@ -123,8 +123,8 @@ void showGeneralCallSheet({
                       onPressed: () {
                         handleGeneralAreaPressed('OOST');
                       },
-                      buttonColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      buttonColor: Theme.of(context).colorScheme.onPrimary,
+                      labelColor: Theme.of(context).colorScheme.primary,
                       progressIndicatorColor: Theme.of(
                         context,
                       ).colorScheme.onPrimary,
@@ -149,8 +149,8 @@ void showGeneralCallSheet({
                       onPressed: () {
                         handleGeneralAreaPressed('ZUID');
                       },
-                      buttonColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.onPrimary,
+                      buttonColor: Theme.of(context).colorScheme.onPrimary,
+                      labelColor: Theme.of(context).colorScheme.primary,
                       progressIndicatorColor: Theme.of(
                         context,
                       ).colorScheme.onPrimary,

@@ -30,8 +30,8 @@ class GeneralButton extends StatelessWidget {
       buttonDetails: buttonDetails,
       databaseService: databaseService,
       onPressed: onPressed,
-      buttonColor: Theme.of(context).colorScheme.primary,
-      labelColor: Theme.of(context).colorScheme.onPrimary,
+      buttonColor: Theme.of(context).colorScheme.primaryContainer,
+      labelColor: Theme.of(context).colorScheme.primary,
       progressIndicatorColor: Theme.of(context).colorScheme.onPrimary,
     );
   }

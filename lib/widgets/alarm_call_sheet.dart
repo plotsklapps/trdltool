@@ -40,7 +40,7 @@ void showAlarmCallSheet({
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Alarmgebied'),
+              Text('Alarm Oproep'),
               Divider(),
               const SizedBox(height: 8),
               Row(
