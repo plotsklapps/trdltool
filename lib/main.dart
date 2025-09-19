@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:signals/signals_flutter.dart';
 import 'package:toastification/toastification.dart';
 import 'package:trdltool/screens/rolechoice_screen.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return ToastificationWrapper(
       child: MaterialApp(
         title: 'TRDLtool',
-        theme: AppTheme.light,
+        theme: cThemeData.watch(context),
         home: const RoleChoiceScreen(),
       ),
     );
