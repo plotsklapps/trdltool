@@ -1,44 +1,172 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:signals/signals_flutter.dart';
-
-// Signal to hold the AppThemeColor.
-final Signal<FlexScheme> sFlexScheme = Signal<FlexScheme>(
-  FlexScheme.redWine,
-  debugLabel: 'sFlexScheme',
-);
+import 'package:trdltool/signals/themecolor_signal.dart';
+import 'package:trdltool/signals/themefont_signal.dart';
+import 'package:trdltool/signals/thememode_signal.dart';
 
 // Signal to hold the AppTheme.
 final Computed<ThemeData> cThemeData = Computed(() {
-  return FlexThemeData.light(
-    scheme: sFlexScheme.value,
-    surfaceMode: FlexSurfaceMode.level,
-    blendLevel: 11,
-    appBarOpacity: 0.85,
-    subThemesData: const FlexSubThemesData(
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      blendOnLevel: 12,
-      thinBorderWidth: 1.5,
-      thickBorderWidth: 3.0,
-      switchThumbFixedSize: true,
-      sliderTrackHeight: 6,
-      inputDecoratorIsFilled: true,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      alignedDropdown: true,
-      tooltipRadius: 4,
-      tooltipSchemeColor: SchemeColor.inverseSurface,
-      tooltipOpacity: 0.9,
-      snackBarElevation: 6,
-      snackBarBackgroundSchemeColor: SchemeColor.inverseSurface,
-      appBarCenterTitle: true,
-      navigationRailUseIndicator: true,
-    ),
-    keyColors: const FlexKeyColors(),
-    visualDensity: VisualDensity.compact,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-    fontFamily: GoogleFonts.inter().fontFamily,
-  );
+  if (sThemeMode.value == ThemeMode.light) {
+    return FlexThemeData.light(
+      // Using FlexColorScheme built-in FlexScheme enum based colors
+      scheme: sThemeColor.value,
+      // Input color modifiers.
+      swapLegacyOnMaterial3: true,
+      // Surface color adjustments.
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      blendLevel: 20,
+      // Convenience direct styling properties.
+      appBarStyle: FlexAppBarStyle.background,
+      bottomAppBarElevation: 1.0,
+      // Component theme configurations for light mode.
+      subThemesData: const FlexSubThemesData(
+        interactionEffects: true,
+        tintedDisabledControls: true,
+        blendOnLevel: 20,
+        blendOnColors: true,
+        thinBorderWidth: 1.5,
+        thickBorderWidth: 3.5,
+        splashType: FlexSplashType.inkSparkle,
+        defaultRadius: 24.0,
+        elevatedButtonSchemeColor: SchemeColor.onPrimaryContainer,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primaryContainer,
+        outlinedButtonOutlineSchemeColor: SchemeColor.primary,
+        toggleButtonsBorderSchemeColor: SchemeColor.primary,
+        segmentedButtonSchemeColor: SchemeColor.primary,
+        segmentedButtonBorderSchemeColor: SchemeColor.primary,
+        unselectedToggleIsColored: true,
+        sliderThumbSchemeColor: SchemeColor.onPrimary,
+        sliderValueTinted: true,
+        sliderTrackHeight: 24,
+        inputDecoratorSchemeColor: SchemeColor.primary,
+        inputDecoratorIsFilled: true,
+        inputDecoratorIsDense: true,
+        inputDecoratorBackgroundAlpha: 15,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
+        inputDecoratorRadius: 10.0,
+        inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
+        fabUseShape: true,
+        chipBlendColors: true,
+        chipRadius: 24.0,
+        popupMenuRadius: 6.0,
+        popupMenuElevation: 6.0,
+        alignedDropdown: true,
+        snackBarRadius: 24,
+        appBarScrolledUnderElevation: 8.0,
+        drawerWidth: 280.0,
+        drawerIndicatorSchemeColor: SchemeColor.primary,
+        bottomNavigationBarMutedUnselectedLabel: false,
+        bottomNavigationBarMutedUnselectedIcon: false,
+        menuRadius: 6.0,
+        menuElevation: 6.0,
+        menuBarRadius: 0.0,
+        menuBarElevation: 1.0,
+        searchBarElevation: 1.0,
+        searchViewElevation: 1.0,
+        searchUseGlobalShape: true,
+        navigationBarSelectedLabelSchemeColor: SchemeColor.primary,
+        navigationBarSelectedIconSchemeColor: SchemeColor.onPrimary,
+        navigationBarIndicatorSchemeColor: SchemeColor.primary,
+        navigationBarElevation: 2.0,
+        navigationBarHeight: 70.0,
+        navigationRailSelectedLabelSchemeColor: SchemeColor.primary,
+        navigationRailSelectedIconSchemeColor: SchemeColor.onPrimary,
+        navigationRailUseIndicator: true,
+        navigationRailIndicatorSchemeColor: SchemeColor.primary,
+        navigationRailIndicatorOpacity: 1.00,
+      ),
+      // ColorScheme seed generation configuration for light mode.
+      keyColors: const FlexKeyColors(
+        useTertiary: true,
+        keepPrimary: true,
+        keepTertiary: true,
+      ),
+      tones: FlexSchemeVariant.chroma.tones(Brightness.light),
+      // Direct ThemeData properties.
+      visualDensity: VisualDensity.standard,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      // Use the computed theme font family (cThemeFont) so ThemeData
+      // responds to the computed canonical fontFamily string.
+      fontFamily: cThemeFont.value,
+    );
+  } else {
+    return FlexThemeData.dark(
+      // Using FlexColorScheme built-in FlexScheme enum based colors.
+      scheme: sThemeColor.value,
+      // Input color modifiers.
+      swapLegacyOnMaterial3: true,
+      // Surface color adjustments.
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      blendLevel: 30,
+      // Convenience direct styling properties.
+      appBarStyle: FlexAppBarStyle.background,
+      bottomAppBarElevation: 2.0,
+      // Component theme configurations for dark mode.
+      subThemesData: const FlexSubThemesData(
+        interactionEffects: true,
+        tintedDisabledControls: true,
+        blendOnLevel: 40,
+        blendOnColors: true,
+        splashType: FlexSplashType.inkSparkle,
+        defaultRadius: 24.0,
+        thinBorderWidth: 1.5,
+        thickBorderWidth: 3.5,
+        elevatedButtonSchemeColor: SchemeColor.onPrimaryContainer,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primaryContainer,
+        outlinedButtonOutlineSchemeColor: SchemeColor.primary,
+        toggleButtonsBorderSchemeColor: SchemeColor.primary,
+        segmentedButtonSchemeColor: SchemeColor.primary,
+        segmentedButtonBorderSchemeColor: SchemeColor.primary,
+        unselectedToggleIsColored: true,
+        sliderThumbSchemeColor: SchemeColor.onPrimary,
+        sliderValueTinted: true,
+        sliderTrackHeight: 24,
+        inputDecoratorSchemeColor: SchemeColor.primary,
+        inputDecoratorIsFilled: true,
+        inputDecoratorIsDense: true,
+        inputDecoratorBackgroundAlpha: 22,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
+        inputDecoratorRadius: 10.0,
+        fabUseShape: true,
+        chipBlendColors: true,
+        chipRadius: 24.0,
+        popupMenuRadius: 6.0,
+        popupMenuElevation: 6.0,
+        alignedDropdown: true,
+        snackBarRadius: 24,
+        drawerWidth: 280.0,
+        drawerIndicatorSchemeColor: SchemeColor.primary,
+        bottomNavigationBarMutedUnselectedLabel: false,
+        bottomNavigationBarMutedUnselectedIcon: false,
+        menuRadius: 6.0,
+        menuElevation: 6.0,
+        menuBarRadius: 0.0,
+        menuBarElevation: 1.0,
+        searchBarElevation: 1.0,
+        searchViewElevation: 1.0,
+        searchUseGlobalShape: true,
+        navigationBarSelectedLabelSchemeColor: SchemeColor.primary,
+        navigationBarSelectedIconSchemeColor: SchemeColor.onPrimary,
+        navigationBarIndicatorSchemeColor: SchemeColor.primary,
+        navigationBarElevation: 2.0,
+        navigationBarHeight: 70.0,
+        navigationRailSelectedLabelSchemeColor: SchemeColor.primary,
+        navigationRailSelectedIconSchemeColor: SchemeColor.onPrimary,
+        navigationRailUseIndicator: true,
+        navigationRailIndicatorSchemeColor: SchemeColor.primary,
+        navigationRailIndicatorOpacity: 1.00,
+      ),
+      // ColorScheme seed configuration setup for dark mode.
+      keyColors: const FlexKeyColors(useTertiary: true, keepPrimary: true),
+      tones: FlexSchemeVariant.chroma.tones(Brightness.dark),
+      // Direct ThemeData properties.
+      visualDensity: VisualDensity.standard,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      fontFamily: cThemeFont.value,
+    );
+  }
 });
