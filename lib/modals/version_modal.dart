@@ -41,9 +41,19 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.1+4 20251023'),
+              subtitle: const Text(
+                '- flutter_lints ingewisseld voor very_good_analysis;\n'
+                '- iOS/macOS/Android/Linux en Windows folders verwijderd;\n'
+                '- Appnaam TRDLtool ipv trdltool.',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.1+3 20251016'),
               subtitle: const Text(
-                '- Thema\'s en letterypen aanpasbaar;\n'
+                "- Thema's en letterypen aanpasbaar;\n"
                 '- Nieuw versioning systeem (pubspec.yaml);\n'
                 '- url_launcher toegevoegd;\n'
                 '- WakeLockPlus toegevoegd (scherm blijft aan).',

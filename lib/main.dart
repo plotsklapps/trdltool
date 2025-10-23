@@ -20,7 +20,7 @@ Future<void> main() async {
   await loadAppVersion();
 
   // Run Wakelock to keep the screen on.
-  WakelockPlus.enable();
+  await WakelockPlus.enable();
 
   // Run the application.
   runApp(const MyApp());

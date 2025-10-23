@@ -17,9 +17,6 @@ final Signal<String> sCodeLeerling = Signal<String>(
 );
 
 class DatabaseService {
-  // 1. Create a static, private instance of the class.
-  static final DatabaseService _instance = DatabaseService._internal();
-
   // 2. Create a factory constructor that returns the private instance.
   factory DatabaseService() {
     return _instance;
@@ -27,28 +24,30 @@ class DatabaseService {
 
   // 3. Create a private, named constructor.
   DatabaseService._internal();
+  // 1. Create a static, private instance of the class.
+  static final DatabaseService _instance = DatabaseService._internal();
 
-  final _database = FirebaseDatabase.instance.ref();
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
   final TimerService _timerService = TimerService();
 
   void generateCode() {
-    const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    final newCode = List.generate(5, (index) {
+    const String characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    final String newCode = List.generate(5, (int index) {
       return characters[Random().nextInt(characters.length)];
     }).join();
     sCodeOpleider.value = newCode;
-    _timerService.startTimer(() {
-      generateCode();
-    });
+    _timerService.startTimer(generateCode);
   }
 
   void saveCodeToDatabase() {
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    final Map<String, dynamic> codeData = {'createdAt': now.toIso8601String()};
+    final Map<String, dynamic> codeData = <String, dynamic>{
+      'createdAt': now.toIso8601String(),
+    };
 
     // Initial button states
-    final List<String> buttonNames = [
+    final List<String> buttonNames = <String>[
       'MKS ALARM',
       'MKS INFO',
       'AL',
@@ -63,9 +62,9 @@ class DatabaseService {
       'ALGEMEEN',
       'BEL MCN',
     ];
-    final Map<String, dynamic> buttons = {
-      for (var name in buttonNames)
-        name: {
+    final Map<String, dynamic> buttons = <String, dynamic>{
+      for (final String name in buttonNames)
+        name: <String, String?>{
           'buttonName': name,
           'state': 'rest',
           'initiator': null,
@@ -74,10 +73,12 @@ class DatabaseService {
         },
     };
 
-    _database.child('$formattedDate/${sCodeOpleider.value}').set({
-      ...codeData,
-      'buttons': buttons,
-    });
+    _database.child('$formattedDate/${sCodeOpleider.value}').set(
+      <String, dynamic>{
+        ...codeData,
+        'buttons': buttons,
+      },
+    );
   }
 
   Future<bool> validateCodeFromDatabase(String enteredCode) async {
@@ -100,20 +101,20 @@ class DatabaseService {
           try {
             final DateTime createdAt = DateTime.parse(createdAtString);
             return currentTime.difference(createdAt).inMinutes <= 5;
-          } catch (e) {
+          } on Exception catch (e) {
             print('Error parsing createdAt date: $e');
             return false;
           }
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       print('Error fetching code from database: $e');
       return false;
     }
     return false;
   }
 
-  void saveButtonPress(
+  Future<void> saveButtonPress(
     String buttonName,
     String caller,
     String state, {
@@ -127,7 +128,7 @@ class DatabaseService {
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final String formattedTime = DateFormat('HH:mm:ss').format(now);
 
-    final Map<String, dynamic> buttonData = {
+    final Map<String, dynamic> buttonData = <String, dynamic>{
       'buttonName': buttonName,
       'state': state, // 'rest', 'calling', 'called', 'active'
       'initiator': caller, // 'opleider' or 'leerling'

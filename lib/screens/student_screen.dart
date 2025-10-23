@@ -24,7 +24,7 @@ class StudentScreen extends StatefulWidget {
 class _StudentScreenState extends State<StudentScreen> {
   final AudioPlayer _alarmtoonPlayer = AudioPlayer();
   final AudioPlayer _beltoonPlayer = AudioPlayer();
-  Map<String, String> _previousButtonStates = {};
+  Map<String, String> _previousButtonStates = <String, String>{};
   final TextEditingController _mcnController = TextEditingController();
 
   @override
@@ -54,9 +54,9 @@ class _StudentScreenState extends State<StudentScreen> {
     const String userRole = 'LEERLING';
 
     // Iterate over all buttons to check for state changes.
-    newButtonStates.forEach((buttonName, newState) {
-      final previousState = _previousButtonStates[buttonName];
-      final initiator = newButtonInitiators[buttonName];
+    newButtonStates.forEach((String buttonName, String newState) {
+      final String? previousState = _previousButtonStates[buttonName];
+      final String? initiator = newButtonInitiators[buttonName];
 
       // A button is being called, and this user is not the one who started it.
       if (newState == 'isCalling' &&
@@ -95,24 +95,27 @@ class _StudentScreenState extends State<StudentScreen> {
 
     return StreamBuilder<DatabaseEvent>(
       stream: database.child(path).onValue,
-      builder: (context, snapshot) {
-        Map<String, String> buttonStates = {};
-        Map<String, String> buttonInitiators = {};
-        Map<String, String?> buttonDetails = {};
+      builder: (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshot) {
+        final Map<String, String> buttonStates = <String, String>{};
+        final Map<String, String> buttonInitiators = <String, String>{};
+        final Map<String, String?> buttonDetails = <String, String?>{};
 
         if (snapshot.hasData &&
             snapshot.data != null &&
             snapshot.data!.snapshot.value != null) {
-          final Map<dynamic, dynamic> data =
-              snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-          data.forEach((key, value) {
+          (snapshot.data!.snapshot.value! as Map<dynamic, dynamic>)
+              .forEach((dynamic key, dynamic value) {
             if (value is Map) {
-              final buttonData = Map<String, dynamic>.from(value);
-              final buttonName = buttonData['buttonName'];
+              final Map<String, dynamic> buttonData = Map<String, dynamic>.from(
+                value,
+              );
+              final String? buttonName = buttonData['buttonName'] as String?;
               if (buttonName != null) {
-                buttonStates[buttonName] = buttonData['state'] ?? 'rest';
-                buttonInitiators[buttonName] = buttonData['initiator'] ?? '';
-                buttonDetails[buttonName] = buttonData['details'];
+                buttonStates[buttonName] =
+                    (buttonData['state'] as String?) ?? 'rest';
+                buttonInitiators[buttonName] =
+                    (buttonData['initiator'] as String?) ?? '';
+                buttonDetails[buttonName] = buttonData['details'] as String?;
               }
             }
           });
@@ -124,19 +127,19 @@ class _StudentScreenState extends State<StudentScreen> {
           appBar: AppBar(
             title: Text(
               'LEERLING GRI ${sCodeLeerling.watch(context)}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           PhoneButton(
                             buttonName: 'MKS ALARM',
                             userRole: 'LEERLING',
@@ -220,7 +223,7 @@ class _StudentScreenState extends State<StudentScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           PhoneButton(
                             buttonName: 'Tunnel Operator',
                             buttonColor: Theme.of(
@@ -236,7 +239,7 @@ class _StudentScreenState extends State<StudentScreen> {
                             buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
-                          const SizedBox(height: 8.0),
+                          const SizedBox(height: 8),
                           PhoneButton(
                             buttonName: 'BuurTRDL',
                             buttonColor: Theme.of(
@@ -291,8 +294,8 @@ class _StudentScreenState extends State<StudentScreen> {
                             buttonInitiators: buttonInitiators,
                             buttonDetails: buttonDetails,
                             databaseService: databaseService,
-                            onShowMcnCallSheet: () {
-                              showMcnCallSheet(
+                            onShowMcnCallSheet: () async {
+                              await showMcnCallSheet(
                                 context: context,
                                 userRole: 'LEERLING',
                                 databasePath: path,
@@ -309,7 +312,7 @@ class _StudentScreenState extends State<StudentScreen> {
                 ),
                 const SizedBox(height: 8),
                 Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: AlarmButton(
                         userRole: 'LEERLING',
@@ -317,8 +320,8 @@ class _StudentScreenState extends State<StudentScreen> {
                         buttonInitiators: buttonInitiators,
                         buttonDetails: buttonDetails,
                         databaseService: databaseService,
-                        onPressed: () {
-                          showAlarmCallSheet(
+                        onPressed: () async {
+                          await showAlarmCallSheet(
                             context: context,
                             userRole: 'LEERLING',
                             databasePath: path,
@@ -337,8 +340,8 @@ class _StudentScreenState extends State<StudentScreen> {
                         buttonInitiators: buttonInitiators,
                         buttonDetails: buttonDetails,
                         databaseService: databaseService,
-                        onPressed: () {
-                          showGeneralCallSheet(
+                        onPressed: () async {
+                          await showGeneralCallSheet(
                             context: context,
                             userRole: 'LEERLING',
                             databasePath: path,
