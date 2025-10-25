@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:trdltool/services/database_service.dart';
 
-import 'phone_button.dart';
+import 'package:trdltool/widgets/phone_button.dart';
 
 class McnButton extends StatelessWidget {
+
+  const McnButton({
+    required this.userRole, required this.buttonStates, required this.buttonInitiators, required this.buttonDetails, required this.databaseService, required this.onShowMcnCallSheet, super.key,
+  });
   final String userRole;
   final Map<String, String> buttonStates;
   final Map<String, String> buttonInitiators;
@@ -11,21 +15,11 @@ class McnButton extends StatelessWidget {
   final DatabaseService databaseService;
   final VoidCallback onShowMcnCallSheet;
 
-  const McnButton({
-    super.key,
-    required this.userRole,
-    required this.buttonStates,
-    required this.buttonInitiators,
-    required this.buttonDetails,
-    required this.databaseService,
-    required this.onShowMcnCallSheet,
-  });
-
   @override
   Widget build(BuildContext context) {
     // Get the current state and initiator for the MCN call.
-    final mcnCallState = buttonStates['MCN'] ?? 'rest';
-    final mcnCallInitiator = buttonInitiators['MCN'] ?? '';
+    final String mcnCallState = buttonStates['MCN'] ?? 'rest';
+    final String mcnCallInitiator = buttonInitiators['MCN'] ?? '';
 
     // Determine the role of the other user.
     final String oppositeRole = userRole == 'LEERLING'

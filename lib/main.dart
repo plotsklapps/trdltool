@@ -2,12 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:toastification/toastification.dart';
+import 'package:trdltool/firebase_options.dart';
 import 'package:trdltool/screens/rolechoice_screen.dart';
 import 'package:trdltool/signals/version_signal.dart';
+import 'package:trdltool/theme/flex_theme.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-
-import 'firebase_options.dart';
-import 'theme/flex_theme.dart';
 
 Future<void> main() async {
   // Bind the Flutter framework to the engine.

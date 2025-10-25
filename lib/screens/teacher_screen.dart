@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,8 @@ class TeacherScreen extends StatefulWidget {
 }
 
 class _TeacherScreenState extends State<TeacherScreen> {
-  final AudioPlayer _alarmtoonPlayer = AudioPlayer();
+  final AudioPlayer _mcnAlarmtoonPlayer = AudioPlayer();
+  final AudioPlayer _boAlarmtoonPlayer = AudioPlayer();
   final AudioPlayer _beltoonPlayer = AudioPlayer();
   Map<String, String> _previousButtonStates = <String, String>{};
   final TextEditingController _mcnController = TextEditingController();
@@ -31,22 +34,30 @@ class _TeacherScreenState extends State<TeacherScreen> {
   @override
   void initState() {
     super.initState();
-    // Pre-load the phone sounds for faster playback.
-    _alarmtoonPlayer.setAsset('assets/mp3/alarmtoon.mp3');
-    _beltoonPlayer.setAsset('assets/mp3/beltoon.mp3');
-    // Set the release mode to loop so the sound plays continuously.
-    _alarmtoonPlayer.setLoopMode(LoopMode.one);
-    _beltoonPlayer.setLoopMode(LoopMode.one);
+    unawaited(preloadAssets());
   }
 
   @override
-  void dispose() {
-    // Stop and release the audio player's resources when the screen is disposed.
-    _alarmtoonPlayer.dispose();
-    _beltoonPlayer.dispose();
+  Future<void> dispose() async {
+    // Stop and release the audio player's resources when the screen
+    // is disposed.
+    await _mcnAlarmtoonPlayer.dispose();
+    await _boAlarmtoonPlayer.dispose();
+    await _beltoonPlayer.dispose();
     _mcnController.dispose();
     _alarmMcnController.dispose();
     super.dispose();
+  }
+
+  Future<void> preloadAssets() async {
+    // Pre-load the phone sounds for faster playback.
+    await _mcnAlarmtoonPlayer.setAsset('assets/wav/mcn_alarm.wav');
+    await _boAlarmtoonPlayer.setAsset('assets/wav/bo_alarm.wav');
+    await _beltoonPlayer.setAsset('assets/wav/beltoon.wav');
+    // Set the release mode to loop so the sound plays continuously.
+    await _mcnAlarmtoonPlayer.setLoopMode(LoopMode.one);
+    await _boAlarmtoonPlayer.setLoopMode(LoopMode.one);
+    await _beltoonPlayer.setLoopMode(LoopMode.one);
   }
 
   void _handleButtonStateChanges(
@@ -56,7 +67,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
     const String userRole = 'OPLEIDER';
 
     // Iterate over all buttons to check for state changes.
-    newButtonStates.forEach((String buttonName, String newState) {
+    newButtonStates.forEach((String buttonName, String newState) async {
       final String? previousState = _previousButtonStates[buttonName];
       final String? initiator = newButtonInitiators[buttonName];
 
@@ -65,25 +76,29 @@ class _TeacherScreenState extends State<TeacherScreen> {
           previousState != 'isCalling' &&
           initiator != userRole) {
         // Decide which sound to play based on the button name.
-        if (buttonName == 'MKS ALARM' || buttonName == 'ALARM') {
-          _alarmtoonPlayer.play();
+        if (buttonName == 'ALARM') {
+          await _mcnAlarmtoonPlayer.play();
+        } else if (buttonName == 'MKS ALARM') {
+          await _boAlarmtoonPlayer.play();
         } else {
-          _beltoonPlayer.play();
+          await _beltoonPlayer.play();
         }
       }
       // A call was answered or cancelled.
       else if (newState != 'isCalling' && previousState == 'isCalling') {
         // Stop the corresponding player.
-        if (buttonName == 'MKS ALARM' || buttonName == 'ALARM') {
-          _alarmtoonPlayer.stop();
+        if (buttonName == 'ALARM') {
+          await _mcnAlarmtoonPlayer.stop();
+        } else if (buttonName == 'MKS ALARM') {
+          await _boAlarmtoonPlayer.stop();
         } else {
-          _beltoonPlayer.stop();
+          await _beltoonPlayer.stop();
         }
       }
     });
 
     // Update the previous states for the next comparison.
-    _previousButtonStates = Map.from(newButtonStates);
+    _previousButtonStates = Map<String, String>.from(newButtonStates);
   }
 
   @override

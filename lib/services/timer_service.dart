@@ -5,8 +5,6 @@ import 'package:signals/signals_flutter.dart';
 final Signal<int> sTimer = Signal<int>(300);
 
 class TimerService {
-  // Create a static, private instance of the class.
-  static final TimerService _instance = TimerService._internal();
 
   // Create a factory constructor that returns the private instance.
   factory TimerService() {
@@ -15,6 +13,8 @@ class TimerService {
 
   // Create a private, named constructor.
   TimerService._internal();
+  // Create a static, private instance of the class.
+  static final TimerService _instance = TimerService._internal();
 
   Timer? _timer;
   final int _initialTime = 300;
@@ -27,7 +27,7 @@ class TimerService {
     sTimer.value = _initialTime;
 
     // Start a new timer.
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (sTimer.value > 0) {
         sTimer.value -= 1;
       } else {

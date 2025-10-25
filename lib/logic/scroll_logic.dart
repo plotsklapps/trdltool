@@ -3,14 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CustomScrollConfiguration extends StatelessWidget {
-  const CustomScrollConfiguration({super.key, required this.child});
+  const CustomScrollConfiguration({required this.child, super.key});
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: ScrollBehavior().copyWith(
+      behavior: const ScrollBehavior().copyWith(
         dragDevices: <PointerDeviceKind>{
           PointerDeviceKind.touch,
           PointerDeviceKind.mouse,

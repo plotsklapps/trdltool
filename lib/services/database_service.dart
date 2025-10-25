@@ -93,7 +93,7 @@ class DatabaseService {
 
       if (codeSnapshot.exists && codeSnapshot.value != null) {
         final Map<String, dynamic> codeData = Map<String, dynamic>.from(
-          codeSnapshot.value as Map,
+          codeSnapshot.value! as Map,
         );
         final String? createdAtString = codeData['createdAt'] as String?;
 

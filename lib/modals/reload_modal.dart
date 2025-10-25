@@ -28,13 +28,13 @@ class ReloadModal extends StatelessWidget {
             ),
             const Divider(),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'Het herladen van de app duurt slechts een paar seconden.\n'
               'Daarna draait automatisch de laatste versie van TRDLtool.',
             ),
             const SizedBox(height: 24),
             Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {

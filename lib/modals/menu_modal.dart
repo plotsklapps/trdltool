@@ -12,34 +12,34 @@ class MenuModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Instellingen'),
-          Divider(),
+        children: <Widget>[
+          const Text('Instellingen'),
+          const Divider(),
           ListTile(
-            title: Text('Thema'),
-            subtitle: Text('Verander het uiterlijk van de app'),
-            trailing: Icon(LucideIcons.chevronRight),
+            title: const Text('Thema'),
+            subtitle: const Text('Verander het uiterlijk van de app'),
+            trailing: const Icon(LucideIcons.chevronRight),
             onTap: () {
-              showModal(context: context, child: ThemeModal());
+              showModal(context: context, child: const ThemeModal());
             },
           ),
           ListTile(
-            title: Text('Over TRDLtool'),
-            subtitle: Text('Meer informatie over deze app'),
-            trailing: Icon(LucideIcons.chevronRight),
+            title: const Text('Over TRDLtool'),
+            subtitle: const Text('Meer informatie over deze app'),
+            trailing: const Icon(LucideIcons.chevronRight),
             onTap: () {
-              showModal(context: context, child: VersionModal());
+              showModal(context: context, child: const VersionModal());
             },
           ),
           ListTile(
             title: Text('Versie: ${sVersion.value}'),
-            subtitle: Text('Herlaad de app om nieuwe updates te installeren'),
-            trailing: Icon(LucideIcons.chevronRight),
+            subtitle: const Text('Herlaad de app om nieuwe updates te installeren'),
+            trailing: const Icon(LucideIcons.chevronRight),
             onTap: () {
-              showModal(context: context, child: ReloadModal());
+              showModal(context: context, child: const ReloadModal());
             },
           ),
         ],

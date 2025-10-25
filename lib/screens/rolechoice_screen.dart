@@ -20,29 +20,32 @@ class RoleChoiceScreen extends StatelessWidget {
             onTap: () {
               showModal(context: context, child: const MenuModal());
             },
-            child: Icon(LucideIcons.menu),
+            child: const Icon(LucideIcons.menu),
           ),
         ),
-        title: Text('TRDLtool', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'TRDLtool',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Ik ben...'),
+          children: <Widget>[
+            const Text('Ik ben...'),
             const SizedBox(height: 36),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 InkWell(
                   onTap: () {
                     databaseService.generateCode();
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
                           return const CreateGRIScreen();
                         },
                       ),
@@ -60,7 +63,7 @@ class RoleChoiceScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       // InkWell provides the tap effect.
-                      child: Center(child: Text('Opleider')),
+                      child: const Center(child: Text('Opleider')),
                     ),
                   ),
                 ),
@@ -68,8 +71,8 @@ class RoleChoiceScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
                           return const ActivateGRIScreen();
                         },
                       ),
@@ -91,9 +94,9 @@ class RoleChoiceScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'Leerling',
-                          style: (TextStyle(
+                          style: TextStyle(
                             color: Theme.of(context).colorScheme.onPrimary,
-                          )),
+                          ),
                         ),
                       ),
                     ),

@@ -7,6 +7,13 @@ import 'package:trdltool/services/database_service.dart';
 // A button that handles different call states.
 // It can show an idle, calling, or active call state.
 class PhoneButton extends StatefulWidget {
+
+  const PhoneButton({
+    required this.buttonName, required this.userRole, required this.buttonStates, required this.buttonInitiators, required this.buttonDetails, required this.databaseService, required this.buttonColor, required this.labelColor, required this.progressIndicatorColor, super.key,
+    this.onPressed,
+    this.onCallEnded,
+    this.overrideLabel,
+  });
   // The unique name of the button, e.g., 'MKS ALARM'.
   final String buttonName;
   // The role of the current user, e.g., 'LEERLING'.
@@ -32,22 +39,6 @@ class PhoneButton extends StatefulWidget {
   // Optional label to override the default button name.
   final String? overrideLabel;
 
-  const PhoneButton({
-    super.key,
-    required this.buttonName,
-    required this.userRole,
-    required this.buttonStates,
-    required this.buttonInitiators,
-    required this.buttonDetails,
-    required this.databaseService,
-    required this.buttonColor,
-    required this.labelColor,
-    required this.progressIndicatorColor,
-    this.onPressed,
-    this.onCallEnded,
-    this.overrideLabel,
-  });
-
   @override
   State<PhoneButton> createState() {
     return _PhoneButtonState();
@@ -64,8 +55,8 @@ class _PhoneButtonState extends State<PhoneButton> {
   void didUpdateWidget(PhoneButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Get the new and old state for this button.
-    final newState = widget.buttonStates[widget.buttonName] ?? 'rest';
-    final oldState = oldWidget.buttonStates[widget.buttonName] ?? 'rest';
+    final String newState = widget.buttonStates[widget.buttonName] ?? 'rest';
+    final String oldState = oldWidget.buttonStates[widget.buttonName] ?? 'rest';
 
     // If the call just became active, start the timer.
     if (newState == 'isActive' && oldState != 'isActive') {
@@ -89,7 +80,7 @@ class _PhoneButtonState extends State<PhoneButton> {
     _timer?.cancel();
 
     // Start a new periodic timer that fires every second.
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (mounted) {
         // Increment the counter and update the UI.
         setState(() {
@@ -114,8 +105,8 @@ class _PhoneButtonState extends State<PhoneButton> {
 
   // Formats seconds into a mm:ss time string.
   String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
+    final int minutes = seconds ~/ 60;
+    final int secs = seconds % 60;
     final DateTime time = DateTime(0, 0, 0, 0, minutes, secs);
     return DateFormat('mm:ss').format(time);
   }
@@ -123,9 +114,9 @@ class _PhoneButtonState extends State<PhoneButton> {
   @override
   Widget build(BuildContext context) {
     // Get the state and initiator for this specific button.
-    final state = widget.buttonStates[widget.buttonName] ?? 'rest';
-    final initiator = widget.buttonInitiators[widget.buttonName] ?? '';
-    final details = widget.buttonDetails[widget.buttonName];
+    final String state = widget.buttonStates[widget.buttonName] ?? 'rest';
+    final String initiator = widget.buttonInitiators[widget.buttonName] ?? '';
+    final String? details = widget.buttonDetails[widget.buttonName];
 
     // Use overrideLabel if provided, otherwise buttonName.
     // If details are available, append them to the label.
@@ -145,10 +136,10 @@ class _PhoneButtonState extends State<PhoneButton> {
         // The button is in the "calling" state.
         // Show a progress indicator.
         child = Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Stack(
             alignment: Alignment.center,
-            children: [
+            children: <Widget>[
               LinearProgressIndicator(
                 minHeight: 32,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -182,7 +173,6 @@ class _PhoneButtonState extends State<PhoneButton> {
             );
           };
         }
-        break;
       case 'isActive':
         // The call is active. Show the timer.
         child = Text(
@@ -202,7 +192,6 @@ class _PhoneButtonState extends State<PhoneButton> {
             'rest',
           );
         };
-        break;
       case 'rest':
       default:
         // The button is in its default, idle state.

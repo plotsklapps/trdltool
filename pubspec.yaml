@@ -37,6 +37,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/mp3/alarmtoon.mp3
-    - assets/mp3/beltoon.mp3
+    - assets/wav/beltoon.wav
+    - assets/wav/bo_alarm.wav
+    - assets/wav/mcn_alarm.wav
     - assets/icons/trdlToolsIcon.png

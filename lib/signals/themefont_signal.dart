@@ -2,7 +2,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:signals/signals_flutter.dart';
 
 // List of available font keys (GoogleFonts method names as strings)
-final Signal<List<String>> sThemeFontList = Signal<List<String>>([
+final Signal<List<String>> sThemeFontList = Signal<List<String>>(<String>[
   'openSans',
   'roboto',
   'lato',

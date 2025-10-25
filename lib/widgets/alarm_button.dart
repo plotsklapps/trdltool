@@ -3,22 +3,16 @@ import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
 class AlarmButton extends StatelessWidget {
+
+  const AlarmButton({
+    required this.userRole, required this.buttonStates, required this.buttonInitiators, required this.buttonDetails, required this.databaseService, required this.onPressed, super.key,
+  });
   final String userRole;
   final Map<String, String> buttonStates;
   final Map<String, String> buttonInitiators;
   final Map<String, String?> buttonDetails;
   final DatabaseService databaseService;
   final VoidCallback onPressed;
-
-  const AlarmButton({
-    super.key,
-    required this.userRole,
-    required this.buttonStates,
-    required this.buttonInitiators,
-    required this.buttonDetails,
-    required this.databaseService,
-    required this.onPressed,
-  });
 
   @override
   Widget build(BuildContext context) {

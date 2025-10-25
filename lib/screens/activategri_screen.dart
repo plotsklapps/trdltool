@@ -12,7 +12,7 @@ class ActivateGRIScreen extends StatelessWidget {
     final TextEditingController codeController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Nieuwe GRI',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -21,18 +21,18 @@ class ActivateGRIScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: TextField(
                 controller: codeController,
-                onChanged: (value) {
+                onChanged: (String value) {
                   sCodeLeerling.value = value.trim();
                 },
                 textAlign: TextAlign.center,
                 textCapitalization: TextCapitalization.characters,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp("[A-Z0-9]")),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp('[A-Z0-9]')),
                 ],
                 decoration: const InputDecoration(hintText: 'Voer code in'),
               ),
@@ -41,16 +41,17 @@ class ActivateGRIScreen extends StatelessWidget {
             InkWell(
               onTap: () async {
                 // Check if the code is valid.
-                final isValid = await databaseService.validateCodeFromDatabase(
-                  sCodeLeerling.value,
-                );
+                final bool isValid = await databaseService
+                    .validateCodeFromDatabase(
+                      sCodeLeerling.value,
+                    );
 
                 // Navigate to GedeeldeRuimteScreen if valid.
                 if (context.mounted && isValid) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) {
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) {
                         return const StudentScreen();
                       },
                     ),
@@ -80,9 +81,9 @@ class ActivateGRIScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Activeer GRI',
-                      style: (TextStyle(
+                      style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
-                      )),
+                      ),
                     ),
                   ),
                 ),

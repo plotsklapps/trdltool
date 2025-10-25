@@ -84,7 +84,7 @@ class VersionModal extends StatelessWidget {
                     onPressed: () {
                       showAboutDialog(context: context);
                     },
-                    child: Text('Licenties'),
+                    child: const Text('Licenties'),
                   ),
                 ),
                 const SizedBox(width: 16),

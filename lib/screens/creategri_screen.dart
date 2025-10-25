@@ -14,7 +14,7 @@ class CreateGRIScreen extends StatelessWidget {
     final TimerService timerService = TimerService();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Nieuwe GRI',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -23,25 +23,23 @@ class CreateGRIScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Text(
                   _formatTime(sTimer.watch(context)),
                   style: const TextStyle(fontSize: 20, color: Colors.red),
                 ),
                 const SizedBox(width: 36),
                 IconButton(
-                  onPressed: () {
-                    databaseService.generateCode();
-                  },
-                  icon: Icon(Icons.refresh),
+                  onPressed: databaseService.generateCode,
+                  icon: const Icon(Icons.refresh),
                 ),
               ],
             ),
             const SizedBox(height: 18),
-            Text(
+            const Text(
               'Geef onderstaande code aan de leerling\nen druk op de button.',
               textAlign: TextAlign.center,
             ),
@@ -54,7 +52,7 @@ class CreateGRIScreen extends StatelessWidget {
             const SizedBox(height: 36),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 InkWell(
                   onTap: () {
                     databaseService.saveCodeToDatabase();
@@ -63,8 +61,8 @@ class CreateGRIScreen extends StatelessWidget {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
                           return const TeacherScreen();
                         },
                       ),
@@ -82,7 +80,7 @@ class CreateGRIScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       // InkWell provides the tap effect.
-                      child: Center(child: Text('Creëer GRI')),
+                      child: const Center(child: Text('Creëer GRI')),
                     ),
                   ),
                 ),
@@ -95,8 +93,8 @@ class CreateGRIScreen extends StatelessWidget {
   }
 
   String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
+    final int minutes = seconds ~/ 60;
+    final int secs = seconds % 60;
     final DateTime time = DateTime(0, 0, 0, 0, minutes, secs);
     return DateFormat('mm:ss').format(time);
   }
