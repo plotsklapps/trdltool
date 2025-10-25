@@ -41,6 +41,17 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.1+5 20251025'),
+              subtitle: const Text(
+                '- Refactored naar very_good_analysis;\n'
+                '- BO-Alarm toon toegevoegd!;\n'
+                '- Van MP3 naar WAV format (kleiner & sneller);\n'
+                '- Nieuwe backend logica, herinstallatie noodzakelijk.',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.1+4 20251023'),
               subtitle: const Text(
                 '- flutter_lints ingewisseld voor very_good_analysis;\n'
