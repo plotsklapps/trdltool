@@ -41,6 +41,12 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.1+6 20251129'),
+              subtitle: const Text('- Dependencies geupgraded.\n'),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.1+5 20251025'),
               subtitle: const Text(
                 '- Refactored naar very_good_analysis;\n'
