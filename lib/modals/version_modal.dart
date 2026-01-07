@@ -41,8 +41,14 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.1+7 20260107'),
+              subtitle: const Text('- Flutter upgrade naar 3.40 (master).'),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.1+6 20251129'),
-              subtitle: const Text('- Dependencies geupgraded.\n'),
+              subtitle: const Text('- Dependencies geupgraded.'),
             ),
             ListTile(
               onTap: _launchGitHub,

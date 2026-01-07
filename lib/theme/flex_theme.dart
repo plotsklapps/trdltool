@@ -7,7 +7,7 @@ import 'package:trdltool/signals/themefont_signal.dart';
 import 'package:trdltool/signals/thememode_signal.dart';
 
 // Signal to hold the AppTheme.
-final Computed<ThemeData> cThemeData = Computed(() {
+final Computed<ThemeData> cThemeData = Computed<ThemeData>(() {
   if (sThemeMode.value == ThemeMode.light) {
     return FlexThemeData.light(
       // Using FlexColorScheme built-in FlexScheme enum based colors

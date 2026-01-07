@@ -1,25 +1,24 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:signals/signals_flutter.dart';
 
+// Create sTimer Signal.
 final Signal<int> sTimer = Signal<int>(300);
 
 class TimerService {
-
-  // Create a factory constructor that returns the private instance.
   factory TimerService() {
     return _instance;
   }
 
-  // Create a private, named constructor.
   TimerService._internal();
-  // Create a static, private instance of the class.
+
   static final TimerService _instance = TimerService._internal();
 
   Timer? _timer;
   final int _initialTime = 300;
 
-  void startTimer(Function onTimerComplete) {
+  void startTimer(VoidCallback onTimerComplete) {
     // Cancel any existing timer.
     _timer?.cancel();
 

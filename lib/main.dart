@@ -22,11 +22,11 @@ Future<void> main() async {
   await WakelockPlus.enable();
 
   // Run the application.
-  runApp(const MyApp());
+  runApp(const MainEntry());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainEntry extends StatelessWidget {
+  const MainEntry({super.key});
 
   @override
   Widget build(BuildContext context) {
