@@ -107,7 +107,7 @@ class DatabaseService {
       if (codeSnapshot.exists && codeSnapshot.value != null) {
         // Convert snapshot value to Map.
         final Map<String, dynamic> codeData = Map<String, dynamic>.from(
-          codeSnapshot.value! as Map<String, dynamic>,
+          codeSnapshot.value! as Map<Object?, Object?>,
         );
 
         // Extract creation timestamp String.
