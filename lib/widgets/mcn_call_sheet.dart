@@ -29,9 +29,10 @@ Future<void> showMcnCallSheet({
               snapshot.data != null &&
               snapshot.data!.snapshot.value != null) {
             // Parse the data from the snapshot.
-            final Map<dynamic, dynamic> data =
-                snapshot.data!.snapshot.value! as Map<dynamic, dynamic>;
-            data.forEach((dynamic key, dynamic value) {
+            (snapshot.data!.snapshot.value! as Map<dynamic, dynamic>).forEach((
+              dynamic key,
+              dynamic value,
+            ) {
               if (value is Map) {
                 final Map<String, dynamic> buttonData =
                     Map<String, dynamic>.from(value);
@@ -66,7 +67,7 @@ Future<void> showMcnCallSheet({
                 TextField(
                   controller: mcnController,
                   keyboardType: TextInputType.number,
-                  maxLength: 5,
+                  maxLength: 6,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     hintText: hintText,

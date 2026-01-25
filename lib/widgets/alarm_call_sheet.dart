@@ -220,7 +220,7 @@ Future<void> showAlarmCallSheet({
                       TextField(
                         controller: mcnController,
                         keyboardType: TextInputType.number,
-                        maxLength: 5,
+                        maxLength: 6,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           hintText: hintText,

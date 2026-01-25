@@ -41,6 +41,16 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.1+9 20260124'),
+              subtitle: const Text(
+                '- Actieve beller blijft nu zichtbaar;\n'
+                '- PhoneButton refactor;\n'
+                '- maxLength treinnummer naar 6.',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.1+8 20260122'),
               subtitle: const Text(
                 '- Flutter downgrade naar 3.38 (stable);\n'

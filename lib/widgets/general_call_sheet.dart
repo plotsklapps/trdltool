@@ -182,25 +182,24 @@ Future<void> showGeneralCallSheet({
                     snapshot.data != null &&
                     snapshot.data!.snapshot.value != null) {
                   // Parse the data from the snapshot.
-                  final Map<dynamic, dynamic> data =
-                      snapshot.data!.snapshot.value! as Map<dynamic, dynamic>;
-                  data.forEach((dynamic key, dynamic value) {
-                    if (value is Map) {
-                      final Map<String, dynamic> buttonData =
-                          Map<String, dynamic>.from(value);
-                      final String? buttonName =
-                          buttonData['buttonName'] as String?;
-                      if (buttonName != null) {
-                        // Populate the maps with button data.
-                        buttonStates[buttonName] =
-                            (buttonData['state'] as String?) ?? 'rest';
-                        buttonInitiators[buttonName] =
-                            (buttonData['initiator'] as String?) ?? '';
-                        buttonDetails[buttonName] =
-                            buttonData['details'] as String?;
-                      }
-                    }
-                  });
+                  (snapshot.data!.snapshot.value! as Map<dynamic, dynamic>)
+                      .forEach((dynamic key, dynamic value) {
+                        if (value is Map) {
+                          final Map<String, dynamic> buttonData =
+                              Map<String, dynamic>.from(value);
+                          final String? buttonName =
+                              buttonData['buttonName'] as String?;
+                          if (buttonName != null) {
+                            // Populate the maps with button data.
+                            buttonStates[buttonName] =
+                                (buttonData['state'] as String?) ?? 'rest';
+                            buttonInitiators[buttonName] =
+                                (buttonData['initiator'] as String?) ?? '';
+                            buttonDetails[buttonName] =
+                                buttonData['details'] as String?;
+                          }
+                        }
+                      });
                 }
 
                 // Padding to avoid the keyboard.
@@ -221,7 +220,7 @@ Future<void> showGeneralCallSheet({
                       TextField(
                         controller: mcnController,
                         keyboardType: TextInputType.number,
-                        maxLength: 5,
+                        maxLength: 6,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           hintText: hintText,
