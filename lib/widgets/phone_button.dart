@@ -7,36 +7,44 @@ import 'package:trdltool/services/database_service.dart';
 // A button that handles different call states.
 // It can show an idle, calling, or active call state.
 class PhoneButton extends StatefulWidget {
-
   const PhoneButton({
-    required this.buttonName, required this.userRole, required this.buttonStates, required this.buttonInitiators, required this.buttonDetails, required this.databaseService, required this.buttonColor, required this.labelColor, required this.progressIndicatorColor, super.key,
+    required this.buttonName,
+    required this.userRole,
+    required this.buttonStates,
+    required this.buttonInitiators,
+    required this.buttonDetails,
+    required this.databaseService,
+    required this.buttonColor,
+    required this.labelColor,
+    required this.progressIndicatorColor,
     this.onPressed,
     this.onCallEnded,
     this.overrideLabel,
+    super.key,
   });
-  // The unique name of the button, e.g., 'MKS ALARM'.
+  // Unique name of the button: 'MKS ALARM'.
   final String buttonName;
-  // The role of the current user, e.g., 'LEERLING'.
+  // Role of current user: 'LEERLING'.
   final String userRole;
-  // Map with the current state of all buttons.
+  // Map with current state of all buttons.
   final Map<String, String> buttonStates;
-  // Map with the initiator for each call.
+  // Map with initiator for each call.
   final Map<String, String> buttonInitiators;
-  // Map with details for a call, if any.
+  // Optional map with details for a call.
   final Map<String, String?> buttonDetails;
-  // Instance of the database service for Firebase.
+  // Instance of database service for Firebase.
   final DatabaseService databaseService;
-  // The base color of the button.
+  // Color of button.
   final Color buttonColor;
-  // The color of the label text.
+  // Color of label text.
   final Color labelColor;
-  // The color of the progress indicator.
+  // Color of progress indicator.
   final Color progressIndicatorColor;
-  // Optional custom action when the button is pressed.
+  // Optional custom action on buttonpress.
   final VoidCallback? onPressed;
-  // Optional callback when a call ends.
+  // Optional callback when call ends.
   final VoidCallback? onCallEnded;
-  // Optional label to override the default button name.
+  // Optional label to override default button name.
   final String? overrideLabel;
 
   @override
@@ -46,7 +54,7 @@ class PhoneButton extends StatefulWidget {
 }
 
 class _PhoneButtonState extends State<PhoneButton> {
-  // Timer for the active call duration.
+  // Timer for active call duration.
   Timer? _timer;
   // Seconds elapsed during an active call.
   int _secondsElapsed = 0;
@@ -54,35 +62,35 @@ class _PhoneButtonState extends State<PhoneButton> {
   @override
   void didUpdateWidget(PhoneButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Get the new and old state for this button.
+    // Get new and old state for this button.
     final String newState = widget.buttonStates[widget.buttonName] ?? 'rest';
     final String oldState = oldWidget.buttonStates[widget.buttonName] ?? 'rest';
 
-    // If the call just became active, start the timer.
+    // If call just became active, start timer.
     if (newState == 'isActive' && oldState != 'isActive') {
       _startTimer();
     } else if (newState != 'isActive') {
-      // If the call is no longer active, stop the timer.
+      // If call is no longer active, stop timer.
       _stopTimer();
       if (oldState == 'isActive' && widget.onCallEnded != null) {
-        // Trigger the onCallEnded callback if provided.
+        // Trigger onCallEnded callback if provided.
         widget.onCallEnded!();
       }
     }
   }
 
-  // Starts the call timer.
+  // Start call timer.
   void _startTimer() {
-    // Reset the counter to 0.
+    // Reset counter to 0.
     _secondsElapsed = 0;
 
     // Cancel any previous timer.
     _timer?.cancel();
 
-    // Start a new periodic timer that fires every second.
+    // Start new periodic timer.
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (mounted) {
-        // Increment the counter and update the UI.
+        // Increment counter and update UI.
         setState(() {
           _secondsElapsed++;
         });
@@ -90,20 +98,22 @@ class _PhoneButtonState extends State<PhoneButton> {
     });
   }
 
-  // Stops the call timer.
+  // Stop call timer.
   void _stopTimer() {
     _timer?.cancel();
+
+    // Reset counter to 0.
     _secondsElapsed = 0;
   }
 
   @override
   void dispose() {
-    // Make sure to cancel the timer when the widget is removed.
+    // Kill timer.
     _timer?.cancel();
     super.dispose();
   }
 
-  // Formats seconds into a mm:ss time string.
+  // Format seconds into mm:ss.
   String _formatTime(int seconds) {
     final int minutes = seconds ~/ 60;
     final int secs = seconds % 60;
@@ -113,13 +123,15 @@ class _PhoneButtonState extends State<PhoneButton> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the state and initiator for this specific button.
+    // Get state and initiator for this specific button.
     final String state = widget.buttonStates[widget.buttonName] ?? 'rest';
     final String initiator = widget.buttonInitiators[widget.buttonName] ?? '';
+
+    // Optionally fetch details.
     final String? details = widget.buttonDetails[widget.buttonName];
 
     // Use overrideLabel if provided, otherwise buttonName.
-    // If details are available, append them to the label.
+    // If details are available, join the Strings.
     String labelText = widget.overrideLabel ?? widget.buttonName;
     if (details != null && details.isNotEmpty) {
       labelText = '$labelText $details';
@@ -129,7 +141,7 @@ class _PhoneButtonState extends State<PhoneButton> {
     Color? backgroundColor;
     VoidCallback? onPressed;
 
-    // Determine the button's appearance and action based
+    // Determine button's appearance and action based
     // on its current state.
     switch (state) {
       case 'isCalling':
@@ -143,7 +155,7 @@ class _PhoneButtonState extends State<PhoneButton> {
               LinearProgressIndicator(
                 minHeight: 32,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
-                valueColor: AlwaysStoppedAnimation(
+                valueColor: AlwaysStoppedAnimation<Color?>(
                   widget.progressIndicatorColor,
                 ),
                 backgroundColor: widget.buttonColor,
@@ -154,18 +166,18 @@ class _PhoneButtonState extends State<PhoneButton> {
         );
         backgroundColor = widget.buttonColor;
         if (initiator == widget.userRole) {
-          // If the user started the call, they can cancel it.
-          onPressed = () {
-            widget.databaseService.saveButtonPress(
+          // If user started the call, they can cancel.
+          onPressed = () async {
+            await widget.databaseService.saveButtonPress(
               widget.buttonName,
               widget.userRole,
               'rest',
             );
           };
         } else {
-          // If the user is being called, they can accept.
-          onPressed = () {
-            widget.databaseService.saveButtonPress(
+          // If user is being called, they can accept.
+          onPressed = () async {
+            await widget.databaseService.saveButtonPress(
               widget.buttonName,
               widget.userRole,
               'isActive',
@@ -174,7 +186,7 @@ class _PhoneButtonState extends State<PhoneButton> {
           };
         }
       case 'isActive':
-        // The call is active. Show the timer.
+        // Call is now active. Show timer.
         child = Text(
           _formatTime(_secondsElapsed),
           style: TextStyle(
@@ -184,9 +196,9 @@ class _PhoneButtonState extends State<PhoneButton> {
           ),
         );
         backgroundColor = Theme.of(context).colorScheme.secondary;
-        // The user can end the call.
-        onPressed = () {
-          widget.databaseService.saveButtonPress(
+        // User can end call.
+        onPressed = () async {
+          await widget.databaseService.saveButtonPress(
             widget.buttonName,
             widget.userRole,
             'rest',
@@ -194,14 +206,14 @@ class _PhoneButtonState extends State<PhoneButton> {
         };
       case 'rest':
       default:
-        // The button is in its default, idle state.
+        // Button is default state.
         child = Text(labelText, style: TextStyle(color: widget.labelColor));
         backgroundColor = widget.buttonColor;
-        // Use the provided onPressed, or start a new call.
+        // Use provided onPressed, or start a new call.
         onPressed =
             widget.onPressed ??
-            () {
-              widget.databaseService.saveButtonPress(
+            () async {
+              await widget.databaseService.saveButtonPress(
                 widget.buttonName,
                 widget.userRole,
                 'isCalling',
