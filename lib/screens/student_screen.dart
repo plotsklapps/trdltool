@@ -140,6 +140,16 @@ class _StudentScreenState extends State<StudentScreen> {
           _handleButtonStateChanges(buttonStates, buttonInitiators);
         }
 
+        String statusText = 'GEEN ACTIEVE OPROEP';
+
+        for (final MapEntry<String, String> entry in buttonStates.entries) {
+          if (entry.value == 'isActive') {
+            statusText = entry.key;
+            // Only one call can be active at a time.
+            break;
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -152,6 +162,30 @@ class _StudentScreenState extends State<StudentScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: <Widget>[
+                SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).disabledColor,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        statusText.toUpperCase(),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Row(
                   children: <Widget>[
                     Expanded(
