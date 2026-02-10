@@ -43,7 +43,8 @@ class VersionModal extends StatelessWidget {
               leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.2+1 20260210'),
               subtitle: const Text(
-                '- Realtime Database beveiligingsregels aangepast.',
+                '- Realtime Database beveiligingsregels aangepast;\n'
+                '- Firebase Analytics (Crashlytics) toegevoegd.',
               ),
             ),
             ListTile(
