@@ -44,8 +44,10 @@ class VersionModal extends StatelessWidget {
               title: const Text('Versie 0.0.2+0 20260210'),
               subtitle: const Text(
                 '- README.md aangepast;\n'
-                '- LICENSE.md toegevoegd;'
-                '- Dependencies geupgraded.',
+                '- LICENSE.md toegevoegd;\n'
+                '- Dependencies geupgraded;\n'
+                '- MUTE knop toegevoegd;\n'
+                "- 'Overig' knop toegevoegd;\n",
               ),
             ),
             ListTile(
