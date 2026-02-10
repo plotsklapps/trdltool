@@ -41,6 +41,14 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.2+1 20260210'),
+              subtitle: const Text(
+                '- Realtime Database beveiligingsregels aangepast.',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.2+0 20260210'),
               subtitle: const Text(
                 '- README.md aangepast;\n'
