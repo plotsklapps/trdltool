@@ -383,7 +383,7 @@ class _StudentScreenState extends State<StudentScreen> {
                             progressIndicatorColor: Theme.of(
                               context,
                             ).colorScheme.primary,
-                            userRole: 'OPLEIDER',
+                            userRole: 'LEERLING',
                             buttonStates: buttonStates,
                             buttonInitiators: buttonInitiators,
                             buttonDetails: buttonDetails,
