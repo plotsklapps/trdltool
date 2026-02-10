@@ -12,6 +12,7 @@ import 'package:trdltool/widgets/general_button.dart';
 import 'package:trdltool/widgets/general_call_sheet.dart';
 import 'package:trdltool/widgets/mcn_button.dart';
 import 'package:trdltool/widgets/mcn_call_sheet.dart';
+import 'package:trdltool/widgets/mute_button.dart';
 import 'package:trdltool/widgets/phone_button.dart';
 
 class TeacherScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
   Map<String, String> _previousButtonStates = <String, String>{};
   final TextEditingController _mcnController = TextEditingController();
   final TextEditingController _alarmMcnController = TextEditingController();
+  bool _isMuted = false;
 
   @override
   void initState() {
@@ -99,6 +101,16 @@ class _TeacherScreenState extends State<TeacherScreen> {
 
     // Update the previous states for the next comparison.
     _previousButtonStates = Map<String, String>.from(newButtonStates);
+  }
+
+  void _toggleMute() {
+    setState(() {
+      _isMuted = !_isMuted;
+      final double volume = _isMuted ? 0.0 : 1.0;
+      unawaited(_mcnAlarmtoonPlayer.setVolume(volume));
+      unawaited(_boAlarmtoonPlayer.setVolume(volume));
+      unawaited(_beltoonPlayer.setVolume(volume));
+    });
   }
 
   @override
@@ -270,6 +282,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
                             buttonDetails: buttonDetails,
                             databaseService: databaseService,
                           ),
+                          const SizedBox(height: 8),
+                          MuteButton(
+                            isMuted: _isMuted,
+                            onTap: _toggleMute,
+                          ),
                         ],
                       ),
                     ),
@@ -357,6 +374,22 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                 hintText: 'TREIN',
                               );
                             },
+                          ),
+                          const SizedBox(height: 8),
+                          PhoneButton(
+                            buttonName: 'Overig',
+                            buttonColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            progressIndicatorColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            userRole: 'OPLEIDER',
+                            buttonStates: buttonStates,
+                            buttonInitiators: buttonInitiators,
+                            buttonDetails: buttonDetails,
+                            databaseService: databaseService,
                           ),
                         ],
                       ),

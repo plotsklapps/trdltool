@@ -66,6 +66,7 @@ class DatabaseService {
       'CRA',
       'Brugwachter',
       'MCN 3064',
+      'Overig',
       'ALARM',
       'ALGEMEEN',
       'BEL MCN',
