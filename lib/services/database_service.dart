@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -149,6 +150,20 @@ class DatabaseService {
       'Button pressed: $buttonName, Details: $details, Caller: $caller, New '
       'state: $state,',
     );
+
+    // Log the initiation of a call to Firebase Analytics to track button usage.
+    // We only log 'isCalling' to avoid duplicate events for a single action.
+    if (state == 'isCalling') {
+      unawaited(
+        FirebaseAnalytics.instance.logEvent(
+          name: 'call_initiated',
+          parameters: <String, Object>{
+            'button_name': buttonName,
+            'user_role': caller,
+          },
+        ),
+      );
+    }
 
     final DateTime now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:trdltool/logic/modal_logic.dart';
@@ -5,9 +8,36 @@ import 'package:trdltool/modals/menu_modal.dart';
 import 'package:trdltool/screens/activategri_screen.dart';
 import 'package:trdltool/screens/creategri_screen.dart';
 import 'package:trdltool/services/database_service.dart';
+import 'package:web/web.dart' as web;
 
-class RoleChoiceScreen extends StatelessWidget {
+class RoleChoiceScreen extends StatefulWidget {
   const RoleChoiceScreen({super.key});
+
+  @override
+  State<RoleChoiceScreen> createState() {
+    return _RoleChoiceScreenState();
+  }
+}
+
+class _RoleChoiceScreenState extends State<RoleChoiceScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _setAppDisplayModeProperty();
+  }
+
+  void _setAppDisplayModeProperty() {
+    final bool isStandalone = web.window
+        .matchMedia('(display-mode: standalone)')
+        .matches;
+    final String displayMode = isStandalone ? 'standalone' : 'browser';
+    unawaited(
+      FirebaseAnalytics.instance.setUserProperty(
+        name: 'app_display_mode',
+        value: displayMode,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +47,8 @@ class RoleChoiceScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: Center(
           child: InkWell(
-            onTap: () {
-              showModal(context: context, child: const MenuModal());
+            onTap: () async {
+              await showModal(context: context, child: const MenuModal());
             },
             child: const Icon(LucideIcons.menu),
           ),
@@ -40,6 +70,14 @@ class RoleChoiceScreen extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                   onTap: () {
+                    // Set the user role property for analytics.
+                    unawaited(
+                      FirebaseAnalytics.instance.setUserProperty(
+                        name: 'user_role',
+                        value: 'OPLEIDER',
+                      ),
+                    );
+
                     databaseService.generateCode();
 
                     Navigator.push(
@@ -68,8 +106,16 @@ class RoleChoiceScreen extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    // Set the user role property for analytics.
+                    unawaited(
+                      FirebaseAnalytics.instance.setUserProperty(
+                        name: 'user_role',
+                        value: 'LEERLING',
+                      ),
+                    );
+
+                    await Navigator.push(
                       context,
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) {
