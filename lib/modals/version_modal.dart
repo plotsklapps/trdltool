@@ -41,6 +41,14 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.2+2 20260212'),
+              subtitle: const Text(
+                '- Flutter upgrade 3.41.0',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.2+1 20260210'),
               subtitle: const Text(
                 '- Realtime Database beveiligingsregels aangepast;\n'
@@ -56,7 +64,7 @@ class VersionModal extends StatelessWidget {
                 '- LICENSE.md toegevoegd;\n'
                 '- Dependencies geupgraded;\n'
                 '- MUTE knop toegevoegd;\n'
-                "- 'Overig' knop toegevoegd;\n",
+                "- 'Overig' knop toegevoegd.\n",
               ),
             ),
             ListTile(
