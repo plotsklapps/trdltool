@@ -45,19 +45,20 @@ class _RoleChoiceScreenState extends State<RoleChoiceScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: Center(
-          child: InkWell(
-            onTap: () async {
-              await showModal(context: context, child: const MenuModal());
-            },
-            child: const Icon(LucideIcons.menu),
-          ),
-        ),
+
         title: const Text(
           'TRDLtool',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () async {
+              await showModal(context: context, child: const MenuModal());
+            },
+            icon: const Icon(LucideIcons.menu),
+          ),
+        ],
       ),
       body: Center(
         child: Column(

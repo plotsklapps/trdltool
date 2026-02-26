@@ -4,7 +4,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:signals/signals_flutter.dart';
+import 'package:trdltool/logic/modal_logic.dart';
+import 'package:trdltool/modals/theme_modal.dart';
 import 'package:trdltool/services/database_service.dart';
 import 'package:trdltool/widgets/alarm_button.dart';
 import 'package:trdltool/widgets/alarm_call_sheet.dart';
@@ -171,6 +174,14 @@ class _TeacherScreenState extends State<TeacherScreen> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             centerTitle: true,
+            actions: <Widget>[
+              IconButton(
+                onPressed: () async {
+                  await showModal(context: context, child: const ThemeModal());
+                },
+                icon: const Icon(LucideIcons.menu),
+              ),
+            ],
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),

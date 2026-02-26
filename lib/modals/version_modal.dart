@@ -41,6 +41,17 @@ class VersionModal extends StatelessWidget {
             ListTile(
               onTap: _launchGitHub,
               leading: const Icon(LucideIcons.github),
+              title: const Text('Versie 0.0.2+3 20260226'),
+              subtitle: const Text(
+                '- Flutter upgrade naar beta channel;\n'
+                '- Deployed zonder --wasm flag;\n'
+                '- Menu verplaatst en toegevoegd aan opleider/leerling '
+                'schermen.',
+              ),
+            ),
+            ListTile(
+              onTap: _launchGitHub,
+              leading: const Icon(LucideIcons.github),
               title: const Text('Versie 0.0.2+2 20260212'),
               subtitle: const Text(
                 '- Flutter upgrade 3.41.0',
